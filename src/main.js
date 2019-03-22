@@ -19,7 +19,7 @@ import Routes from "./routes";
 
 // Import store
 import store from "./store";
-
+import Framework7Styles from "framework7/css/framework7.css";
 // Import App Component
 import App from "./app";
 
