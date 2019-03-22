@@ -1,7 +1,8 @@
 <template>
-<div>
-  лол
-</div>
+  <f7-app  id="app"
+           :params="f7params">
+
+  </f7-app>
 </template>
 <script>
 import { mapGetters } from "vuex";
