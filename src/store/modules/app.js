@@ -1,7 +1,6 @@
 import axios from "axios";
 import Vue from "vue";
 
-import versionChecker from "../versionChecker";
 
 const URL = `http://${process.env.VUE_APP_API_HOST}:${
   process.env.VUE_APP_API_PORT

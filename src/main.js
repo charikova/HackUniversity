@@ -32,7 +32,7 @@ const router = new VueRouter({
 Vue.use(VueRouter);
 
 
-import WebSocketHandler from "./js/websocket";
+//import WebSocketHandler from "./js/websocket";
 
 // Init App
 new Vue({
@@ -44,7 +44,7 @@ new Vue({
   store,
   data() {
     return {
-      socket: new WebSocketHandler(store)
+      //socket: new WebSocketHandler(store)
     };
   },
   render: h => h(App)
