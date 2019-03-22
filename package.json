@@ -41,6 +41,7 @@
   "homepage": "http://framework7.io/vue/",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@chenfengyuan/vue-qrcode": "^1.0.0",
     "axios": "^0.18.0",
     "framework7": "^3.3.2",
     "framework7-icons": "^0.9.1",

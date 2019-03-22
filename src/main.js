@@ -13,6 +13,8 @@ import Framework7Vue from "framework7-vue/framework7-vue.esm.bundle.js";
 
 // Combine F7 & Vue
 Framework7.use(Framework7Vue);
+import VueQrcode from '@chenfengyuan/vue-qrcode';
+Vue.component(VueQrcode.name, VueQrcode);
 
 
 // Import store
