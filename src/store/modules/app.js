@@ -7,21 +7,40 @@ const URL = `http://${process.env.VUE_APP_API_HOST}:${
   }/api/`;
 
 const initialState = () => ({
-  name:"",
+  name: "",
+  eventId: ""
 });
 
 const state = initialState();
+const axiosConfig = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
 
 const getters = {
-  getMeetupName: ({ name }) => name,
+  getMeetupName: ({name}) => name,
+  getEventId: ({eventId}) => eventId,
 };
 
 const actions = {
-
+  getEventId({getters, commit}) {
+    return axios
+      .get(`${URL}getEventId/`, axiosConfig)
+      .then(({data}) => {
+        commit["setEventId"](data)
+      })
+      .catch((error) => {
+        console.log('мда')
+      })
+  }
 };
 
 const mutations = {
-
+  setEventId(state,{eventId}){
+    console.log(eventId);
+    state.eventId = eventId
+  }
 };
 
 export default {

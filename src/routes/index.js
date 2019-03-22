@@ -7,7 +7,7 @@ export default [
     component: Main,
   },
   {
-    path: "/room/:eventId/",
+    path: "/event/:eventId/",
     component: Event
   }
 ];
