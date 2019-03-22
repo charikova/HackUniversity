@@ -1,0 +1,84 @@
+{
+  "name": "HackUniversity",
+  "version": "2.0.0",
+  "description": "",
+  "scripts": {
+    "start": "npm run serve:dev",
+    "serve:dev": "vue-cli-service serve --mode development --open",
+    "build": "npm run build:prod",
+    "build:dev": "vue-cli-service build --mode development --report",
+    "build:prod": "vue-cli-service build --mode production",
+    "copy-fonts": "cpy node_modules/framework7-icons/fonts/*.* src/fonts && cpy node_modules/material-design-icons/iconfont/*.{eot,ttf,woff,woff2} src/fonts",
+    "postinstall": "npm run copy-fonts",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:fix": "npm run lint:js:fix && npm run lint:css:fix",
+    "lint:js": "eslint src --ext .js,.vue",
+    "lint:js:fix": "eslint src --ext .js,.vue --fix",
+    "lint:css": "stylelint src/**/*.css src/**/*.vue",
+    "lint:css:fix": "stylelint src/**/*.css src/**/*.vue --fix",
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/framework7io/framework7-template-vue-webpack.git"
+  },
+  "keywords": [
+    "ios",
+    "webpack",
+    "framework7",
+    "vue",
+    "vuejs",
+    "material",
+    "mobile",
+    "app",
+    "f7"
+  ],
+  "author": "Vladimir Kharlampidi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/framework7io/framework7-template-vue-webpack/issues"
+  },
+  "homepage": "http://framework7.io/vue/",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "axios": "^0.18.0",
+    "framework7": "^3.3.2",
+    "framework7-icons": "^0.9.1",
+    "framework7-vue": "^3.3.2",
+    "material-design-icons": "^3.0.1",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuewordcloud": "^18.7.11",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.1.1",
+    "@vue/cli-plugin-eslint": "^3.1.1",
+    "@vue/cli-service": "^3.1.1",
+    "@vue/eslint-config-prettier": "^4.0.0",
+    "autoprefixer": "^9.3.1",
+    "babel-eslint": "^10.0.1",
+    "copy-webpack-plugin": "^4.6.0",
+    "cpy-cli": "^1.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "prettier": "^1.15.2",
+    "rimraf": "^2.6.0",
+    "stylelint": "^9.3.0",
+    "stylelint-config-prettier": "^3.3.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-processor-html": "^1.0.0",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8",
+    "iOS >= 9",
+    "safari >= 10"
+  ]
+}
