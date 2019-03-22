@@ -1,6 +1,6 @@
 <template>
   <div class="votes">
-    <div v-for="vote in votes" :key="vote" class="vote_wrapper">
+    <div v-for="vote in votes" :key="vote.id" class="vote_wrapper">
       <div
         class="vote_bar"
         :style="{ width: Math.round((vote.count / total_votes) * 100) + '%' }"
@@ -25,7 +25,7 @@ export default {
 
 <style scoped>
 .vote_wrapper {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.2);
   padding: 10px 15px;
   display: flex;
   flex-direction: row;
@@ -34,6 +34,8 @@ export default {
   border-radius: 6px;
   justify-content: space-between;
   position: relative;
+  font-size: 1.5em;
+
 }
 
 .vote_name {
@@ -60,10 +62,12 @@ export default {
   left: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 5;
 }
 .cancel_button {
   margin-top: 40px;
+  border: none;
+  color: #fff;
 }
 </style>
