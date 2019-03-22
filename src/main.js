@@ -14,8 +14,6 @@ import Framework7Vue from "framework7-vue/framework7-vue.esm.bundle.js";
 // Combine F7 & Vue
 Framework7.use(Framework7Vue);
 
-// Import Routes
-import Routes from "./routes";
 
 // Import store
 import store from "./store";
@@ -24,19 +22,11 @@ import Framework7Styles from "framework7/css/framework7.css";
 import App from "./app";
 
 // Import VueRouter & YaMetrika
-import VueRouter from "vue-router";
-const router = new VueRouter({
-  mode: "history",
-  routes: Routes
-});
-Vue.use(VueRouter);
-
 
 //import WebSocketHandler from "./js/websocket";
 
 // Init App
 new Vue({
-  router,
   template: '<App/>',
   components: {
     app: App
@@ -44,6 +34,7 @@ new Vue({
   store,
   data() {
     return {
+      theme: "ios"
       //socket: new WebSocketHandler(store)
     };
   },
