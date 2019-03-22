@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--
+  Customize this policy to fit your own app's needs. For more guidance, see:
+      https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+  Some notes:
+      * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+      * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+      * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+          * Enable inline JS: add 'unsafe-inline' to default-src
+  -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:"> -->
+  <meta http-equiv="Content-Security-Policy" content="  default-src * data: blob: ws: wss: gap://ready file://*; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * ws: wss:; worker-src blob:">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#19bb4f">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="shortcut icon" href="<%= BASE_URL %>static/img/favicon.ico" type="image/x-icon" />
+  <link rel="manifest" href="<%= BASE_URL %>static/manifest.json">
+  <link rel="apple-touch-icon" href="<%= BASE_URL %>static/img/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="57x57" href="<%= BASE_URL %>static/img/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="<%= BASE_URL %>static/img/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="<%= BASE_URL %>static/img/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="<%= BASE_URL %>static/img/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="<%= BASE_URL %>static/img/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="<%= BASE_URL %>static/img/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="<%= BASE_URL %>static/img/apple-touch-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= BASE_URL %>static/img/apple-touch-icon-180x180.png" />
+  <title>Meetuper</title>
+  <!-- built style files will be auto injected -->
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <!-- Cordova -->
+
+  <!-- <script src="cordova.js"></script> -->
+
+  <!-- built script files will be auto injected -->
+</body>
+
+</html>
