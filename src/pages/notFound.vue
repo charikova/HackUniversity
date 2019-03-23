@@ -21,7 +21,12 @@
     name: "notFound",
     methods: {
       back() {
-        this.$f7router.back()
+        window.location.href = `http://${process.env.VUE_APP_API_HOST}:${process.env.VUE_APP_API_PORT}`
+        this.$f7router.navigate("/", {
+          reloadCurrent: true,
+          ignoreCache: true,
+          reloadAll:true
+        });
     }
   }
   }

@@ -67,7 +67,7 @@
         eventId: this.eventId}
         )
         .then(()=> {
-            console.log('загружено')
+
         })
         .catch((error)=>{
           this.$f7.dialog.alert(`${error.response.status}`, "Error");

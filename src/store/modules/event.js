@@ -25,11 +25,10 @@ const getters = {
 
 const actions = {
   getSongs({getters, commit}, {eventId}) {
-    console.log(eventId)
     return axios
       .get(`${URL}event/${eventId}/tracks/`, null, axiosConfig)
       .then(({data}) => {
-        commit("setSongs", {data})
+        commit("setSongs", data)
       })
       .catch((error) => {
         throw error
