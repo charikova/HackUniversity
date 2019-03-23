@@ -43,11 +43,13 @@
     "@babel/polyfill": "^7.0.0",
     "@chenfengyuan/vue-qrcode": "^1.0.0",
     "axios": "^0.18.0",
+    "chart.js": "^2.8.0",
     "framework7": "^3.3.2",
     "framework7-icons": "^0.9.1",
     "framework7-vue": "^3.3.2",
     "material-design-icons": "^3.0.1",
     "vue": "^2.5.17",
+    "vue-chartjs": "^3.4.2",
     "vue-router": "^3.0.1",
     "vuewordcloud": "^18.7.11",
     "vuex": "^3.0.1"

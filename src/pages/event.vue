@@ -45,61 +45,59 @@
           <p>Голосование окончено</p>
         </div>
       </div>
-      <div v-if="isAdmin">
-        <f7-button class="cancel_button" @click="popupOpen = true"
-          >Песни для голосования</f7-button
-        >
+      <div v-if="isAdmin" style="display: flex;justify-content: center;align-content: center;">
+        <f7-button  class="cancel_button" @click="popupOpen = true">Песни для голосования</f7-button>
       </div>
-      <popup
-        v-if="isAdmin"
-        :opened="popupOpen"
-        @popup:closed="popupOpen = false"
-      ></popup>
+      <popup v-if="isAdmin"
+             :opened="popupOpen"
+             @popup:closed="popupOpen = false"></popup>
     </div>
   </f7-page>
 </template>
 
 <script>
-import VoteChart from "../components/VoteChart";
-import { mapGetters } from "vuex";
-import WebSocketHandler from "../js/websocket";
-import Popup from "../components/Popup";
+  import VoteChart from "../components/VoteChart";
+  import {mapGetters} from "vuex";
+  import WebSocketHandler from "../js/websocket";
+  import Popup from "../components/Popup";
 
-export default {
-  name: "event",
-  props: {
-    eventId: String
-  },
-  data: () => ({
-    votes: [
-      {
-        id: 0,
-        name: "I hate everything about you",
-        artist: "Three days grace",
-        count: 113
-      },
-      {
-        id: 1,
-        name: "Time of Dying",
-        artist: "Three days grace",
-        count: 87
-      },
-      {
-        id: 2,
-        name: "I Am Machine",
-        artist: "Three days grace",
-        count: 34
-      }
-    ],
-    total_votes: 113 + 87,
-    selected_vote: null,
-    current_time: 0,
-    finish_time: Math.floor(Date.now() / 1000 + 10),
-    seconds: 0,
-    minutes: 0,
-    end: 0,
-    popupOpen: false
-  }),
+
+  export default {
+    name: "event",
+    props: {
+      eventId: String
+    },
+    data: () => ({
+      votes: [
+        {
+          id: 0,
+          name: "I hate everything about you",
+          artist: "Three days grace",
+          count: 113
+        },
+        {
+          id: 1,
+          name: "Time of Dying",
+          artist: "Three days grace",
+          count: 87
+        },
+        {
+          id: 2,
+          name: "I Am Machine",
+          artist: "Three days grace",
+          count: 34
+        }
+      ],
+      total_votes: 113 + 87,
+      selected_vote: null,
+      current_time: 0,
+      finish_time: Math.floor(Date.now() / 1000 + 10),
+      seconds: 0,
+      minutes: 0,
+      time_left: 1,
+      end: 0,
+      popupOpen:false
+    }),
 
   components: {
     Popup,
@@ -176,97 +174,92 @@ export default {
 </script>
 
 <style>
-p {
-  font-size: 0.6em;
-  margin: 0.5em 0;
-}
+  p {
+    font-size: 0.6em;
+    margin: .5em 0;
+  }
 
-.vote_wrapper {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 10px 10px;
-  display: flex;
-  flex-direction: row;
-  color: #fff;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  justify-content: space-between;
-  position: relative;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: left;
-  cursor: pointer;
-}
+  .vote_wrapper {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    justify-content: space-between;
+    position: relative;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+  }
 
-.vote_artist {
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: normal;
-}
+  .vote_artist {
+    color: rgba(255, 255, 255, .7);
+    font-weight: normal;
+  }
 
-.subtitle {
-  text-align: center;
-  font-size: 1.3em;
-  color: #fff;
-  margin-bottom: 15px;
-  margin-top: 20px;
-}
+  .subtitle {
+    text-align: center;
+    font-size: 1.3em;
+    color: #fff;
+    margin-bottom: 15px;
+    margin-top: 20px;
+  }
 
-.subtitle_vote {
-  text-align: center;
-  font-size: 0.3em;
-  color: #fff;
-  margin-bottom: 1px;
-  margin-top: 10px;
-}
+  .subtitle_vote {
+    text-align: center;
+    font-size: 0.3em;
+    color: #fff;
+    margin-bottom: 1px;
+    margin-top: 10px;
+  }
 
-.time_is_over {
-  text-align: center;
-  font-size: 0.5em;
-  color: #fff;
-  margin-top: 15px;
-}
+  .time_is_over {
+    text-align: center;
+    font-size: 0.5em;
+    color: #fff;
+    margin-top: 15px;
+  }
 
-.gradient {
-  background: linear-gradient(
-    148.61deg,
-    rgba(219, 84, 197, 0.65) 7.81%,
-    rgba(234, 56, 56, 0.65) 56.36%,
-    rgba(232, 112, 61, 0.65) 96.56%
-  ) !important;
-  height: 100%;
-  overflow: hidden;
-}
+  .gradient {
+    background: linear-gradient(148.61deg, rgba(219, 84, 197, 0.65) 7.81%, rgba(234, 56, 56, 0.65) 56.36%, rgba(232, 112, 61, 0.65) 96.56%) !important;
+    height: 100%;
+    overflow: hidden;
+  }
 
-.mynavbar {
-  background: none !important;
-  color: #fff;
-  border-bottom: 1px solid #fff;
-  font-size: 1.5rem !important;
-  text-align: center;
-  margin: 10px 0 35px;
-  padding-bottom: 10px;
-}
+  .mynavbar {
+    background: none !important;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    font-size: 1.5rem !important;
+    text-align: center;
+    margin: 10px 0 35px;
+    padding-bottom: 10px;
+  }
 
-.mycontainer {
-  padding: 0 10px;
-  text-align: center;
-  margin-bottom: 30px;
-}
+  .mycontainer {
+    padding: 0 10px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
 
-.cancel_button {
-  margin-top: 15px;
-  border: 1px solid #fff !important;
-  color: #fff !important;
-  font-size: 1.2rem;
-  display: inline-block;
-  padding: 5px 10px !important;
-  height: auto !important;
-}
+  .cancel_button {
+    margin-top: 15px;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 5px 10px !important;
+    height: auto !important;
+  }
 
-.timer {
-  text-align: center;
-  font-size: 5em;
-  color: #fff;
-  margin-top: 3px;
-  line-height: 1.1;
-}
+  .timer {
+    text-align: center;
+    font-size: 5em;
+    color: #fff;
+    margin-top: 3px;
+    line-height: 1.1;
+  }
 </style>
