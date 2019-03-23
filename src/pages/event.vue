@@ -94,15 +94,21 @@
         if (this.seconds < 10) {
           this.seconds = "0" + this.seconds;
         }
-        ;
       }, 1000);
+
+      const stored = localStorage.getItem('selected_vote');
+      if (stored) {
+        this.selected_vote = stored;
+      }
     },
     methods: {
       make_vote: function(id) {
         this.selected_vote = id;
+        localStorage.setItem('selected_vote', id);
       },
       cancel_vote: function() {
         this.selected_vote = null;
+        localStorage.removeItem('selected_vote');
       }
     },
     computed: {},
