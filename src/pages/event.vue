@@ -27,7 +27,14 @@
       </div>
       <div class="subtitle_vote">До конца голосования:</div>
       <div class="timer">
-        {{minutes}}:{{seconds}}
+        <div v-if="this.end == 0">
+          <div class="subtitle_vote">До конца голосования:</div>
+          {{minutes}}:{{seconds}}
+        </div>
+        <div class="time_is_over" v-if="this.end == 1">
+          Время вышло!<br>
+          <p>Голосование окончено</p>
+        </div>
       </div>
       <f7-block v-if="isAdmin">
         <f7-list>
@@ -78,8 +85,10 @@
       selected_vote: null,
       current_time: 0,
       finish_time: Math.floor(Date.now() / 1000 + 60),
-      seconds: 0,
-      minutes: 0
+      seconds: "00",
+      minutes: "01",
+      time_left: 1,
+      end: 0
     }),
     created(){
       if(!!localStorage.getItem("admin")) {
@@ -96,6 +105,13 @@
       }
     },
     mounted() {
+      this.current_time = Math.floor(Date.now() / 1000);
+      this.time_left = this.finish_time - this.current_time;
+      if (this.time_left <= 0) {
+        this.seconds = "00";
+        this.minutes = "00";
+        this.end = 1;
+      }
       setInterval(() => {
         this.current_time = Math.floor(Date.now() / 1000);
         let time_left = this.finish_time - this.current_time;
@@ -108,6 +124,12 @@
         if (this.seconds < 10) {
           this.seconds = "0" + this.seconds;
         }
+        if (this.time_left <= 0) {
+          this.seconds = "00";
+          this.minutes = "00";
+          this.end = 1;
+        }
+        this.time_left = this.time_left - 1
       }, 1000);
 
       const stored = localStorage.getItem('selected_vote');
@@ -137,6 +159,10 @@
 </script>
 
 <style>
+  p {
+    font-size: 0.6em;
+  }
+
   .vote_wrapper {
     background: rgba(0, 0, 0, 0.2);
     padding: 10px 10px;
@@ -168,10 +194,17 @@
 
   .subtitle_vote {
     text-align: center;
-    font-size: 1.3em;
+    font-size: 0.3em;
     color: #fff;
     margin-bottom: 1px;
     margin-top: 10px;
+  }
+
+  .time_is_over {
+    text-align: center;
+    font-size: 0.5em;
+    color: #fff;
+    margin-top: 15px;
   }
 
   .gradient {
