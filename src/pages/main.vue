@@ -2,7 +2,12 @@
   <f7-page class="main-page">
     <div class="main-block">
       <div class="img-layer">
-        <img src="./../img/concert.jpg" class="concert-img" />
+        <div class="smallimage">
+          <img src="./../img/concert.jpg" class="concert-img" />
+        </div>
+        <div class="bigimage">
+          <img src="./../img/concert2.jpg" class="concert-img" />
+        </div>
       </div>
     </div>
     <div class="main-block">
@@ -52,6 +57,8 @@
     box-sizing: border-box;
     background: #000;
     color: #fff;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   .concert-img {
@@ -74,4 +81,22 @@
     line-height: 1.1;
   }
 
+
+  @media screen and (min-width: 1000px) {
+      .bigimage {
+        display: block;
+      }
+      .smallimage {
+        display: none;
+      }
+  }
+
+  @media screen and (max-width: 999px) {
+    .bigimage {
+      display: none;
+    }
+    .smallimage {
+      display: block;
+    }
+  }
 </style>
