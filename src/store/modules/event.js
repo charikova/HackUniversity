@@ -12,7 +12,7 @@ const initialState = () => ({
   currentSongs: [],
   timer: 0,
   choice: {},
-  total: 1
+  total: 0
 });
 
 const state = initialState();

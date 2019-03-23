@@ -3,7 +3,7 @@
     <div class="gradient">
       <!--<PayButton />-->
 
-      <div v-if="selected_vote !== null">
+      <div v-if="selected_vote !== null" :class="{'disable':this.end === 1}">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
           <div class="subtitle">Вы проголосовали</div>
@@ -13,7 +13,7 @@
             :selected="selected_vote"
             :cancel_vote="cancel_vote"
           />
-          <div class="cancel_button" @click="sheetOpen = true">
+          <div class="cancel_button" v-if="this.end == 0" @click="sheetOpen = true">
             <i class="material-icons">
               attach_money
             </i>
@@ -282,5 +282,8 @@
     color: #fff;
     margin-top: 3px;
     line-height: 1.1;
+  }
+  .disable{
+    pointer-events: none;
   }
 </style>

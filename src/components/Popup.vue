@@ -30,8 +30,9 @@
       <f7-list>
         <f7-block-title>Время опроса</f7-block-title>
         <f7-list-item class="custom-stepper">
-          <f7-stepper :wraps="true"
+          <f7-stepper
                       :value="timer" :min="10" :max="300" :step="10"
+                      @stepper:change="editTime"
                       style="border: 1px white solid;display:flex;align-content: center;justify-content: center"
           ></f7-stepper>
         </f7-list-item>
@@ -60,6 +61,9 @@
       })
     },
     methods: {
+      editTime(value){
+        this.timer = value;
+      },
       close() {
         this.$f7.popup.close();
       },
