@@ -24,22 +24,26 @@ const getters = {
 };
 
 const actions = {
-  getEventId({getters, commit}) {
+  getEventId({getters, commit},{name,songs}) {
+
+    const data = {
+      name:name,
+      songs: songs
+    }
     return axios
-      .get(`${URL}getEventId/`, axiosConfig)
+      .post(`${URL}getEventId/`,data, axiosConfig)
       .then(({data}) => {
-        commit["setEventId"](data)
+        commit("setEventId",{data})
       })
       .catch((error) => {
-        console.log('мда')
+        console.log(error)
       })
   }
 };
 
 const mutations = {
   setEventId(state,{eventId}){
-    console.log(eventId);
-    state.eventId = eventId
+    state.eventId = eventId;
   }
 };
 

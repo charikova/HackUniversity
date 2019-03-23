@@ -24,8 +24,8 @@
         </f7-block-title>
         <f7-list-input v-for="song in songs"
                        :key="song.name+'-'+song.id"
-                       :value="song.name"
-                       @input="song.name = $event.target.value"
+                       :value="song.title"
+                       @input="song.title = $event.target.value"
                        placeholder="Название песни"
         >
 
@@ -35,7 +35,7 @@
         <f7-button large fill color="red" @click="generateLink">Генерировать QR-Код</f7-button>
       </f7-block>
       <f7-block class="qr-code">
-        <qrcode v-if="link" :value="link" :options="{ width: 200 }"></qrcode>
+        <qrcode v-if="link" :value="link" :options="{ width: widthDevice }"></qrcode>
       </f7-block>
     </div>
   </f7-page>
@@ -54,15 +54,23 @@
         }]
       }
     },
+    computed:{
+      widthDevice(){
+       return document.body.clientWidth-100
+      }
+    },
     methods: {
       addSong() {
+        if(!this.songs[this.songs.length-1].title) return
         this.songs.push({
           id:this.songs.length,
         });
-        console.log(this.songs)
       },
       generateLink() {
-        this.$store.dispatch('getEventId')
+        if(!this.complete()) return
+        this.$store.dispatch('getEventId',{
+          name:this.name,
+          songs:this.songs})
           .then(()=>{
             this.link = `http://${process.env.VUE_APP_API_HOST}:${
               process.env.VUE_APP_API_PORT}/event/${this.$store.getters["getEventId"]}`;
@@ -70,7 +78,16 @@
           .catch(()=>{
             console.log('ебать ты лох')
           })
-
+      },
+      complete(){
+        if(!this.name){
+          this.$f7.dialog.alert("Имя обязательное поле","Ошибка");
+          return false
+        }
+        if(!this.songs[this.songs.length-1].title){
+          this.$f7.dialog.alert("Заполните песни","Ошибка");
+          return false
+        }
       }
     }
   }
