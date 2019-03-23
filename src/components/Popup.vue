@@ -13,10 +13,11 @@
           Выбор песен для голосования
         </f7-nav-title>
         <f7-nav-right>
-          <f7-link  style="font-size: 14px;" @click="close">Зыкрыть</f7-link>
+          <f7-link style="font-size: 14px;" @click="close">Зыкрыть</f7-link>
         </f7-nav-right>
       </f7-navbar>
       <f7-list>
+        <f7-block-title>Песни</f7-block-title>
         <f7-list-item
           v-for="song in songs"
           :title="song.title"
@@ -25,10 +26,13 @@
           checkbox
         >
         </f7-list-item>
-        <f7-list-item>
-          <f7-stepper
-            :value="timer" :min="10" :max="300" :step="10"
-            style="border: 1px white solid;display:flex;align-content: center;justify-content: center"
+      </f7-list>
+      <f7-list>
+        <f7-block-title>Время опроса</f7-block-title>
+        <f7-list-item class="custom-stepper">
+          <f7-stepper :wraps="true"
+                      :value="timer" :min="10" :max="300" :step="10"
+                      style="border: 1px white solid;display:flex;align-content: center;justify-content: center"
           ></f7-stepper>
         </f7-list-item>
         <f7-list-button @click="sendCurrentSongs">Отправить на голосование</f7-list-button>
@@ -39,14 +43,16 @@
 
 <script>
   import {mapGetters} from "vuex";
+
   export default {
     name: "Popup",
-    props:{
-      opened:Boolean
+    props: {
+      opened: Boolean,
+      eventId: String
     },
     data: () => ({
-        currentSongs: [],
-        timer:60,
+      currentSongs: [],
+      timer: 60,
     }),
     computed: {
       ...mapGetters({
@@ -54,11 +60,21 @@
       })
     },
     methods: {
-      close(){
+      close() {
         this.$f7.popup.close();
       },
       addSongCurrent(song) {
-        this.currentSongs.push(song)
+        var flg;
+        for (var i = 0; i < this.currentSongs.length; i++) {
+          if (this.currentSongs[i].id === song.id) {
+            this.currentSongs.splice(i, 1);
+            flg = true;
+            return
+          }
+        }
+
+        if (!flg)
+          this.currentSongs.push(song)
       },
       sendCurrentSongs() {
         if (this.currentSongs.length < 2) {
@@ -91,11 +107,16 @@
             });
             toastCenter.open();
           })
+        this.$f7.popup.close();
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style>
+  .custom-stopper .item-content .item-inner {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+  }
 </style>

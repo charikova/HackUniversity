@@ -6,8 +6,8 @@
         :style="[ bar_animate ?  { width: Math.round((vote.count / total_votes) * 100) + '%' } : {}]"
       ></div>
       <div class="vote_left">
-        <div class="vote_name">{{ vote.name }}</div>
-        <div class="vote_artist">{{ vote.artist }}</div>
+        <div class="vote_name">{{ vote.title}}</div>
+        <div class="vote_artist">{{ vote.name}}</div>
       </div>
       <div class="vote_result">
         <i class="f7-icons" v-if="selected == vote.id">check</i>

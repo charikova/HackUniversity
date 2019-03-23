@@ -23,11 +23,11 @@
             v-for="vote in votes"
             :key="vote.id"
             class="vote_wrapper"
-            @click="make_vote(vote.id)"
+            @click="make_vote(vote)"
           >
             <div>
-              <div class="vote_name">{{ vote.name }}</div>
-              <div class="vote_artist">{{ vote.artist }}</div>
+              <div class="vote_name">{{ vote.title }}</div>
+              <div class="vote_artist">{{ vote.name }}</div>
             </div>
           </div>
         </div>
@@ -47,6 +47,7 @@
       </div>
       <popup v-if="isAdmin"
              :opened="popupOpen"
+             :eventId = "eventId"
              @popup:closed="popupOpen = false"></popup>
     </div>
   </f7-page>
@@ -66,27 +67,6 @@
       eventId: String
     },
     data: () => ({
-      votes: [
-        {
-          id: 0,
-          name: "I hate everything about you",
-          artist: "Three days grace",
-          count: 113
-        },
-        {
-          id: 1,
-          name: "Time of Dying",
-          artist: "Three days grace",
-          count: 87
-        },
-        {
-          id: 2,
-          name: "I Am Machine",
-          artist: "Three days grace",
-          count: 34
-        }
-      ],
-      total_votes: 113 + 87,
       selected_vote: null,
       current_time: 0,
       finish_time: Math.floor(Date.now() / 1000 + 10),
@@ -152,9 +132,14 @@
       updateTimer();
       setInterval(updateTimer, 1000);
     },
-    make_vote: function(id) {
-      this.selected_vote = id;
-      localStorage.setItem("selected_vote", id);
+    make_vote: function(vote) {
+      vote.count++;
+      this.selected_vote = vote.id;
+      localStorage.setItem("selected_vote", vote.id);
+      this.$store.dispatch("vote",{
+        eventId: 1,
+        trackId: vote.id
+      })
     },
     cancel_vote: function() {
       this.selected_vote = null;
@@ -167,6 +152,12 @@
     }),
     isAdmin() {
       return !!localStorage.getItem("admin");
+    },
+    votes(){
+      return this.$store.getters["getCurrentSongs"]
+    },
+    total_votes(){
+      return this.$store.getters["getTotalVotes"]
     }
   }
 };
