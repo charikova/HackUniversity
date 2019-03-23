@@ -50,6 +50,7 @@
       </div>
       <popup v-if="isAdmin"
              :opened="popupOpen"
+             :eventId = "eventId"
              @popup:closed="popupOpen = false"></popup>
     </div>
   </f7-page>
