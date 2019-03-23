@@ -27,16 +27,18 @@
       <f7-list>
         <f7-block-title style="display: flex;justify-content: space-between;align-content: center;">
           <span>Добавить песен</span>
-          <div>
-            <i
-              class="f7-icons"
-              @click="delSong"
-            >delete</i>
-            <i
-              class="f7-icons"
-              @click="addSong"
-              style="margin-left:10px"
-            >add</i>
+          <div style="display: flex;">
+            <div @click="delSong">
+              <i
+                class="f7-icons"
+              >delete</i>
+            </div>
+            <div @click="addSong">
+              <i
+                class="f7-icons"
+                style="margin-left:10px"
+              >add</i>
+            </div>
           </div>
         </f7-block-title>
         <f7-list-input v-for="song in songs"
@@ -87,8 +89,8 @@
           id: this.songs.length + 1,
         });
       },
-      delSong(){
-        if(this.songs.length !== 1) this.songs.pop();
+      delSong() {
+        if (this.songs.length !== 1) this.songs.pop();
       },
       generateLink() {
         if (!this.name) {
@@ -108,8 +110,9 @@
               process.env.VUE_APP_API_PORT}/event/${this.$store.getters["getEventId"]}`;
             this.eventAdd = true;
           })
-          .catch(() => {
-            console.log('ебать ты лох')
+          .catch(error => {
+            if (error.response && error.response.status === 500)
+              this.$f7.dialog.alert("Непредвиденная ошибка сервера", "Ошибка");
           })
       },
       navigateEvent() {

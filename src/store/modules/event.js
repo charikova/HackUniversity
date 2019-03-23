@@ -7,21 +7,40 @@ const URL = `http://${process.env.VUE_APP_API_HOST}:${
   }/api/`;
 
 const initialState = () => ({
-  name:"",
+  songs: []
 });
 
 const state = initialState();
 
+const axiosConfig = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
+
+
 const getters = {
-  getMeetupName: ({ name }) => name,
+  getAllSongs: ({songs}) => songs,
 };
 
 const actions = {
-
-};
+  getSongs({getters, commit}, {eventId}) {
+    console.log(eventId)
+    return axios
+      .get(`${URL}event/${eventId}/tracks/`, null, axiosConfig)
+      .then(({data}) => {
+        commit("setSongs", {data})
+      })
+      .catch((error) => {
+        throw error
+      })
+  }
+}
 
 const mutations = {
-
+  setSongs(state, songs) {
+    state.songs = songs;
+  }
 };
 
 export default {

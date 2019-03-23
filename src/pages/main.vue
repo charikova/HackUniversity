@@ -8,7 +8,7 @@
     <div class="main-block">
       <div class="main-layout-block"
       >
-          <f7-button big fill color="red" @click="start">Начать мероприятие</f7-button>
+          <f7-button big fill color="red" @click="start">Создать мероприятие</f7-button>
       </div>
     </div>
     <div class="main-block">
