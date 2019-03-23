@@ -141,9 +141,10 @@
         trackId: vote.id
       })
     },
-    cancel_vote: function() {
+    cancel_vote: function(vote) {
       this.selected_vote = null;
       localStorage.removeItem("selected_vote");
+      vote.count--;
     }
   },
   computed: {
