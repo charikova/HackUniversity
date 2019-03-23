@@ -29,13 +29,15 @@
       <div class="timer">
         {{minutes}}:{{seconds}}
       </div>
-      <f7-list>
-        <f7-list-item
-          v-for="song in songs"
-          :title="song.title"
-          :key = "song.id">
-        </f7-list-item>
-      </f7-list>
+      <f7-block v-if="isAdmin">
+        <f7-list>
+          <f7-list-item
+            v-for="song in songs"
+            :title="song.title"
+            :key = "song.id">
+          </f7-list-item>
+        </f7-list>
+      </f7-block>
     </div>
   </f7-page>
 </template>
@@ -43,6 +45,8 @@
 <script>
   import VoteChart from "../components/VoteChart";
   import { mapGetters } from "vuex";
+
+
 
   export default {
     name: "event",
@@ -78,15 +82,18 @@
       minutes: 0
     }),
     created(){
-      this.$store.dispatch('getSongs', {
-        eventId: this.eventId}
+      if(!!localStorage.getItem("admin")) {
+        this.$store.dispatch('getSongs', {
+            eventId: this.eventId
+          }
         )
-        .then(()=> {
+          .then(() => {
 
-        })
-        .catch((error)=>{
-          this.$f7.dialog.alert(`${error.response.status}`, "Error");
-        })
+          })
+          .catch((error) => {
+            this.$f7.dialog.alert(`${error.response.status}`, "Error");
+          })
+      }
     },
     mounted() {
       setInterval(() => {
@@ -121,7 +128,10 @@
     computed: {
       ...mapGetters({
         songs:"getAllSongs"
-      })},
+      }),
+      isAdmin(){
+        return !!localStorage.getItem("admin")
+      }},
     components: { VoteChart }
   };
 </script>

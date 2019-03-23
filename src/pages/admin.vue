@@ -122,6 +122,9 @@
       back() {
         this.$f7router.back();
       }
+    },
+    mounted(){
+        localStorage.setItem("admin",true);
     }
   }
 </script>
