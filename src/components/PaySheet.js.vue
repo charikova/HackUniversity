@@ -38,8 +38,14 @@
     font-size: 1.2rem;
     margin-bottom: 15px;
     height: 60px;
+    color: rgb(234, 56, 56);
+    border-color: rgb(234, 56, 56);
   }
   .sheet-modal {
     height: 320px;
+    background: #fff;
+  }
+  .sheet-close {
+    color: rgb(234, 56, 56);
   }
 </style>
