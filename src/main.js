@@ -22,8 +22,8 @@ import store from "./store";
 import Framework7Styles from "framework7/css/framework7.css";
 // Import App Component
 import App from "./app";
-
-// Import VueRouter & YaMetrika
+//Import App Icons
+import IconsStyles from "./css/icons.css";
 
 //import WebSocketHandler from "./js/websocket";
 
