@@ -35,7 +35,7 @@
           <p>Голосование окончено</p>
         </div>
       </div>
-      <div v-if="isAdmin">
+      <div v-if="isAdmin" style="display: flex;justify-content: center;align-content: center;flex-direction: column">
         <div class="subtitle">Выберите следующую песню</div>
         <f7-list>
           <f7-list-item
@@ -43,11 +43,15 @@
             :title="song.title"
             :key = "song.id"
             @click="addSongCurrent(song)"
+            checkbox
           >
           </f7-list-item>
+          <f7-list-item><f7-stepper
+            :value="timer" :min="10" :max="300" :step="10"
+            style="border: 1px white solid;"
+          ></f7-stepper></f7-list-item>
         </f7-list>
-        <f7-stepper :value="timer" :min="10" :max="300" :step="10"></f7-stepper>
-        <f7-button class="cancel_button" @click="sendCurrentSongs">Отправить на голосование</f7-button>
+        <f7-button  class="cancel_button" @click="sendCurrentSongs">Отправить на голосование</f7-button>
       </div>
     </div>
   </f7-page>
@@ -112,30 +116,24 @@
       }
     },
     mounted() {
-      this.current_time = Math.floor(Date.now() / 1000);
-      this.time_left = this.finish_time - this.current_time;
-      if (this.time_left <= 1) {
-        this.seconds = "00";
-        this.minutes = "00";
-        this.end = 1;
+      const stored = localStorage.getItem('selected_vote');
+      if (stored) {
+        this.selected_vote = stored;
       }
-      this.current_time = Math.floor(Date.now() / 1000);
-      let time_left = this.finish_time - this.current_time;
-      this.seconds = time_left % 60;
-      time_left = Math.floor(time_left / 60);
-      this.minutes = time_left % 60;
-      if (this.minutes < 10) {
-        this.minutes = "0" + this.minutes;
-      }
-      if (this.seconds < 10) {
-        this.seconds = "0" + this.seconds;
-      }
-      if (this.time_left <= 1) {
-        this.seconds = "00";
-        this.minutes = "00";
-        this.end = 1;
-      }
-      setInterval(() => {
+
+      this.socket = new WebSocketHandler(this.$store);
+      const url = WebSocketHandler.eventSocketURL(1);
+      this.socket.connect(url)
+    },
+    methods: {
+      timerStart(){
+        this.current_time = Math.floor(Date.now() / 1000);
+        this.time_left = this.finish_time - this.current_time;
+        if (this.time_left <= 1) {
+          this.seconds = "00";
+          this.minutes = "00";
+          this.end = 1;
+        }
         this.current_time = Math.floor(Date.now() / 1000);
         let time_left = this.finish_time - this.current_time;
         this.seconds = time_left % 60;
@@ -152,19 +150,26 @@
           this.minutes = "00";
           this.end = 1;
         }
-        this.time_left = this.time_left - 1
-      }, 1000);
-
-      const stored = localStorage.getItem('selected_vote');
-      if (stored) {
-        this.selected_vote = stored;
-      }
-
-      this.socket = new WebSocketHandler(this.$store);
-      const url = WebSocketHandler.eventSocketURL(1);
-      this.socket.connect(url)
-    },
-    methods: {
+        setInterval(() => {
+          this.current_time = Math.floor(Date.now() / 1000);
+          let time_left = this.finish_time - this.current_time;
+          this.seconds = time_left % 60;
+          time_left = Math.floor(time_left / 60);
+          this.minutes = time_left % 60;
+          if (this.minutes < 10) {
+            this.minutes = "0" + this.minutes;
+          }
+          if (this.seconds < 10) {
+            this.seconds = "0" + this.seconds;
+          }
+          if (this.time_left <= 1) {
+            this.seconds = "00";
+            this.minutes = "00";
+            this.end = 1;
+          }
+          this.time_left = this.time_left - 1
+        }, 1000);
+      },
       make_vote: function(id) {
         this.selected_vote = id;
         localStorage.setItem('selected_vote', id);
@@ -182,8 +187,8 @@
           return
         }
         const data = {
-          type: "current",
-          songs: this.currentSongs,
+          type: "Current",
+          tracks: this.currentSongs,
           timer: this.timer
         }
 

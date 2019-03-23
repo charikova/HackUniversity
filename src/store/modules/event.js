@@ -41,9 +41,9 @@ const actions = {
         throw error
       })
   },
-  setCurrentSongs({getters, commit},{eventId,currentSongs}){
+  setCurrentSongs({getters, commit},{eventId,data}){
     return axios
-      .get(`${URL}event/${eventId}/currentTracks/`, currentSongs, axiosConfig)
+      .post(`${URL}event/${eventId}/currentTracks/`, data, axiosConfig)
       .then(({data}) => {
         console.log(data)
       })
@@ -71,7 +71,7 @@ const mutations = {
     state.socket_connected = false;
   },
   CurrentSongs(state, data) {
-    state.currentSongs = data.songs;
+    state.currentSongs = data.tracks;
     state.timer = data.timer;
   },
   ChoiceCount(state, data) {
