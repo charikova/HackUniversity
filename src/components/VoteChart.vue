@@ -1,6 +1,6 @@
 <template>
   <div class="votes">
-    <div v-for="vote in votes" :key="vote.id" class="vote_wrapper">
+    <div v-for="vote in votes" :key="vote.id" class="vote_wrapper" v-on="{click: selected == vote.id ? cancel_vote : () => {}}">
       <div
         class="vote_bar"
         :style="[ bar_animate ?  { width: Math.round((vote.count / total_votes) * 100) + '%' } : {}]"
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  props: ["votes", "selected", "total_votes"],
+  props: ["votes", "selected", "total_votes", "cancel_vote"],
   data: () => ({
     bar_animate: false
   }),

@@ -1,6 +1,8 @@
 <template>
   <f7-page>
     <div class="gradient">
+      <!--<PayButton />-->
+
       <div v-if="selected_vote !== null">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
@@ -9,13 +11,8 @@
             :votes="votes"
             :total_votes="total_votes"
             :selected="selected_vote"
+            :cancel_vote="cancel_vote"
           />
-          <f7-button
-            v-if="this.end == 0"
-            class="cancel_button"
-            @click="cancel_vote"
-            >Отменить голос</f7-button
-          >
         </div>
       </div>
       <div v-if="selected_vote === null">
@@ -60,6 +57,7 @@
   import {mapGetters} from "vuex";
   import WebSocketHandler from "../js/websocket";
   import Popup from "../components/Popup";
+  import PayButton from "../components/PayButton";
 
 
   export default {
@@ -100,6 +98,7 @@
     }),
 
   components: {
+    PayButton,
     Popup,
     VoteChart
   },
