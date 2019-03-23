@@ -25,7 +25,7 @@ const actions = {
 };
 
 const mutations = {
-  ...app.mutations,
+  ...event.mutations,
   ...app.mutations
 };
 
