@@ -131,7 +131,7 @@
     timerStart() {
       const updateTimer = () => {
         this.current_time = Math.floor(Date.now() / 1000);
-        let time_left = this.realTime - this.current_time;
+        let time_left = Math.floor(this.realTime / 1000) - this.current_time;
 
         if (time_left <= 1) {
           this.seconds = "00";
