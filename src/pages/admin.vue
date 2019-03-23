@@ -8,7 +8,6 @@
         Генерация QR-кода для мероприятия
       </f7-nav-title>
       <f7-nav-right>
-        
       </f7-nav-right>
     </f7-navbar>
 
@@ -30,12 +29,13 @@
           <span>Добавить песен</span>
           <div>
             <i
-              class="material-icons"
+              class="f7-icons"
               @click="delSong"
-            >minimize</i>
+            >delete</i>
             <i
-              class="material-icons"
+              class="f7-icons"
               @click="addSong"
+              style="margin-left:10px"
             >add</i>
           </div>
         </f7-block-title>
