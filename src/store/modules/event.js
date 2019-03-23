@@ -10,7 +10,7 @@ const initialState = () => ({
   songs: [],
   socket_connected: false,
   currentSongs: [],
-  timer: '',
+  timer: 0,
   choice: {}
 });
 
