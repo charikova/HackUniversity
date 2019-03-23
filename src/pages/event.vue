@@ -36,13 +36,15 @@
           <p>Голосование окончено</p>
         </div>
       </div>
-      <f7-list>
-        <f7-list-item
-          v-for="song in songs"
-          :title="song.title"
-          :key = "song.id">
-        </f7-list-item>
-      </f7-list>
+      <f7-block v-if="isAdmin">
+        <f7-list>
+          <f7-list-item
+            v-for="song in songs"
+            :title="song.title"
+            :key = "song.id">
+          </f7-list-item>
+        </f7-list>
+      </f7-block>
     </div>
   </f7-page>
 </template>
@@ -51,6 +53,8 @@
   import VoteChart from "../components/VoteChart";
   import { mapGetters } from "vuex";
   import WebSocketHandler from "../js/websocket";
+
+
 
   export default {
     name: "event",
@@ -88,15 +92,18 @@
       end: 0
     }),
     created(){
-      this.$store.dispatch('getSongs', {
-        eventId: this.eventId}
+      if(!!localStorage.getItem("admin")) {
+        this.$store.dispatch('getSongs', {
+            eventId: this.eventId
+          }
         )
-        .then(()=> {
+          .then(() => {
 
-        })
-        .catch((error)=>{
-          this.$f7.dialog.alert(`${error.response.status}`, "Error");
-        })
+          })
+          .catch((error) => {
+            this.$f7.dialog.alert(`${error.response.status}`, "Error");
+          })
+      }
     },
     mounted() {
       this.current_time = Math.floor(Date.now() / 1000);
@@ -149,7 +156,10 @@
     computed: {
       ...mapGetters({
         songs:"getAllSongs"
-      })},
+      }),
+      isAdmin(){
+        return !!localStorage.getItem("admin")
+      }},
     components: { VoteChart }
   };
 </script>
