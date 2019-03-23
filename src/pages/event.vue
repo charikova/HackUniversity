@@ -1,25 +1,27 @@
 <template>
-  <f7-page class="gradient">
-    <div v-if="selected_vote !== null">
-      <div class="mynavbar">Голосование</div>
-      <div class="mycontainer">
-        <div class="subtitle">Вы сделали голос</div>
-        <VoteChart
-          :votes="votes"
-          :total_votes="total_votes"
-          :selected="selected_vote"
-        />
-        <f7-button class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
+  <f7-page>
+    <div class="gradient">
+      <div v-if="selected_vote !== null">
+        <div class="mynavbar">Голосование</div>
+        <div class="mycontainer">
+          <div class="subtitle">Вы сделали голос</div>
+          <VoteChart
+            :votes="votes"
+            :total_votes="total_votes"
+            :selected="selected_vote"
+          />
+          <f7-button class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
+        </div>
       </div>
-    </div>
-    <div v-if="selected_vote === null">
-      <div class="mynavbar">Голосование</div>
-      <div class="mycontainer">
-        <div class="subtitle">Выберите следующую песню</div>
-        <div v-for="vote in votes" :key="vote.id" class="vote_wrapper" @click="make_vote(vote.id)">
-          <div>
-            <div class="vote_name">{{ vote.name }}</div>
-            <div class="vote_artist">{{ vote.artist }}</div>
+      <div v-if="selected_vote === null">
+        <div class="mynavbar">Голосование</div>
+        <div class="mycontainer">
+          <div class="subtitle">Выберите следующую песню</div>
+          <div v-for="vote in votes" :key="vote.id" class="vote_wrapper" @click="make_vote(vote.id)">
+            <div>
+              <div class="vote_name">{{ vote.name }}</div>
+              <div class="vote_artist">{{ vote.artist }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -93,7 +95,7 @@
   }
 
   .vote_artist {
-    color: rgba(255,255,255,.7);
+    color: rgba(255, 255, 255, .7);
     font-weight: normal;
   }
 
@@ -107,6 +109,8 @@
 
   .gradient {
     background: linear-gradient(148.61deg, rgba(219, 84, 197, 0.65) 7.81%, rgba(234, 56, 56, 0.65) 56.36%, rgba(232, 112, 61, 0.65) 96.56%) !important;
+    height: 100%;
+    overflow: hidden;
   }
 
   .mynavbar {
