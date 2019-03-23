@@ -25,13 +25,20 @@
           </div>
         </div>
       </div>
+      <f7-list>
+        <f7-list-item
+          v-for="song in songs"
+          :title="song.title">
+          
+        </f7-list-item>
+      </f7-list>
     </div>
   </f7-page>
 </template>
 
 <script>
   import VoteChart from "../components/VoteChart";
-
+  import { mapGetters } from "vuex";
 
   export default {
     name: "event",
@@ -84,7 +91,10 @@
         this.selected_vote = null;
       }
     },
-    computed: {},
+    computed: {
+      ...mapGetters({
+        songs:"getAllSongs"
+      })},
     components: { VoteChart }
   };
 </script>
