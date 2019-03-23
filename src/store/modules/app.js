@@ -33,10 +33,10 @@ const actions = {
     return axios
       .post(`${URL}getEventId/`,data, axiosConfig)
       .then(({data}) => {
-        commit("setEventId",{data})
+        commit("setEventId",data)
       })
       .catch((error) => {
-        console.log(error)
+        throw error
       })
   }
 };

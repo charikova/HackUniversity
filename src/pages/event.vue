@@ -1,33 +1,41 @@
 <template>
-  <f7-page class="gradient">
-    <div v-if="selected_vote !== null">
-      <f7-navbar title="Вы проголосовали" class="mynavbar"></f7-navbar>
-      <f7-block>
-        <VoteChart
-          :votes="votes"
-          :total_votes="total_votes"
-          :selected="selected_vote"
-        />
-      </f7-block>
-    </div>
-    <div v-if="selected_vote === null">
-      <f7-navbar title="Голосование" class="mynavbar"></f7-navbar>
-      <f7-block>
-        <div class="subtitle">Выберите следующую песню</div>
-        <div v-for="vote in votes" :key="vote.id" class="vote_wrapper">
-          {{ vote.name }}
+  <f7-page>
+    <div class="gradient">
+      <div v-if="selected_vote !== null">
+        <div class="mynavbar">Голосование</div>
+        <div class="mycontainer">
+          <div class="subtitle">Вы сделали голос</div>
+          <VoteChart
+            :votes="votes"
+            :total_votes="total_votes"
+            :selected="selected_vote"
+          />
+          <f7-button class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
         </div>
-      </f7-block>
-    </div>
-    <div class="subtitle_vote">До конца голосования:</div>
-    <div class="timer">
-      {{minutes}}:{{seconds}}
+      </div>
+      <div v-if="selected_vote === null">
+        <div class="mynavbar">Голосование</div>
+        <div class="mycontainer">
+          <div class="subtitle">Выберите следующую песню</div>
+          <div v-for="vote in votes" :key="vote.id" class="vote_wrapper" @click="make_vote(vote.id)">
+            <div>
+              <div class="vote_name">{{ vote.name }}</div>
+              <div class="vote_artist">{{ vote.artist }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="subtitle_vote">До конца голосования:</div>
+      <div class="timer">
+        {{minutes}}:{{seconds}}
+      </div>
     </div>
   </f7-page>
 </template>
 
 <script>
   import VoteChart from "../components/VoteChart";
+
 
   export default {
     name: "event",
@@ -39,16 +47,19 @@
         {
           id: 0,
           name: "I hate everything about you",
+          artist: "Three days grace",
           count: 113
         },
         {
           id: 1,
           name: "Time of Dying",
+          artist: "Three days grace",
           count: 87
         },
         {
           id: 2,
           name: "I Am Machine",
+          artist: "Three days grace",
           count: 34
         }
       ],
@@ -58,13 +69,23 @@
       finish_time: Math.floor(Date.now() / 1000 + 60),
       seconds: 0,
       minutes: 0
-
     }),
+    created(){
+      this.$store.dispatch('getSongs', {
+        eventId: this.eventId}
+        )
+        .then(()=> {
+            console.log('загружено')
+        })
+        .catch((error)=>{
+          this.$f7.dialog.alert(`${error.response.status}`, "Error");
+        })
+    },
     mounted() {
       setInterval(() => {
         this.current_time = Math.floor(Date.now() / 1000);
         let time_left = this.finish_time - this.current_time;
-          this.seconds = time_left % 60;
+        this.seconds = time_left % 60;
         time_left = Math.floor(time_left / 60);
         this.minutes = time_left % 60;
         if (this.minutes < 10) {
@@ -76,16 +97,23 @@
         ;
       }, 1000);
     },
-    methods: {},
+    methods: {
+      make_vote: function(id) {
+        this.selected_vote = id;
+      },
+      cancel_vote: function() {
+        this.selected_vote = null;
+      }
+    },
     computed: {},
-    components: { VoteChart },
+    components: { VoteChart }
   };
 </script>
 
 <style>
   .vote_wrapper {
     background: rgba(0, 0, 0, 0.2);
-    padding: 10px 15px;
+    padding: 10px 10px;
     display: flex;
     flex-direction: row;
     color: #fff;
@@ -93,7 +121,14 @@
     border-radius: 6px;
     justify-content: space-between;
     position: relative;
-    font-size: 1.5em;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+  }
+
+  .vote_artist {
+    color: rgba(255, 255, 255, .7);
+    font-weight: normal;
   }
 
   .subtitle {
@@ -101,7 +136,9 @@
     font-size: 1.3em;
     color: #fff;
     margin-bottom: 15px;
+    margin-top: 20px;
   }
+
 
   .subtitle_vote {
     text-align: center;
@@ -113,16 +150,29 @@
 
   .gradient {
     background: linear-gradient(148.61deg, rgba(219, 84, 197, 0.65) 7.81%, rgba(234, 56, 56, 0.65) 56.36%, rgba(232, 112, 61, 0.65) 96.56%) !important;
+    height: 100%;
+    overflow: hidden;
   }
 
   .mynavbar {
     background: none !important;
     color: #fff;
     border-bottom: 1px solid #fff;
+    font-size: 1.5rem !important;
+    text-align: center;
+    margin: 10px 0 35px;
+    padding-bottom: 10px;
   }
 
-  .mynavbar .navbar-inner {
-    justify-content: center !important;
+  .mycontainer {
+    padding: 0 10px;
+  }
+
+  .cancel_button {
+    margin-top: 40px;
+    border: none !important;
+    color: #fff !important;
+    font-size: 1.3rem;
   }
 
   .timer {

@@ -1,12 +1,12 @@
 <template>
   <f7-page>
     <f7-navbar>
-    <f7-nav-left>
-      <i class="material-icons" @click="back">arrow_back_ios</i>
-    </f7-nav-left>
-    <f7-nav-title>
-      Генерация QR-Кода для мероприятия
-    </f7-nav-title>
+      <f7-nav-left>
+        <i class="f7-icons" style="padding-left: 10px" @click="back">chevron-left</i>
+      </f7-nav-left>
+      <f7-nav-title>
+        Генерация QR-кода для мероприятия
+      </f7-nav-title>
       <f7-nav-right>
       </f7-nav-right>
     </f7-navbar>
@@ -27,18 +27,26 @@
       <f7-list>
         <f7-block-title style="display: flex;justify-content: space-between;align-content: center;">
           <span>Добавить песен</span>
-          <i
-            class="material-icons"
-            @click="addSong"
-          >add</i>
+          <div style="display: flex;">
+            <div @click="delSong">
+              <i
+                class="f7-icons"
+              >delete</i>
+            </div>
+            <div @click="addSong">
+              <i
+                class="f7-icons"
+                style="margin-left:10px"
+              >add</i>
+            </div>
+          </div>
         </f7-block-title>
         <f7-list-input v-for="song in songs"
                        :key="song.name+'-'+song.id"
                        :value="song.title"
                        @input="song.title = $event.target.value"
-                       placeholder="Название песни"
+                       :placeholder="`${song.id}. Название песни`"
         >
-
         </f7-list-input>
       </f7-list>
       <f7-block>
@@ -65,7 +73,7 @@
         name: "",
         eventAdd: false,
         songs: [{
-          id: 0
+          id: 1
         }]
       }
     },
@@ -76,10 +84,13 @@
     },
     methods: {
       addSong() {
-        if (!this.songs[this.songs.length - 1].title) return
+        //if (!this.songs[this.songs.length - 1].title) return
         this.songs.push({
-          id: this.songs.length,
+          id: this.songs.length + 1,
         });
+      },
+      delSong() {
+        if (this.songs.length !== 1) this.songs.pop();
       },
       generateLink() {
         if (!this.name) {
@@ -99,8 +110,9 @@
               process.env.VUE_APP_API_PORT}/event/${this.$store.getters["getEventId"]}`;
             this.eventAdd = true;
           })
-          .catch(() => {
-            console.log('ебать ты лох')
+          .catch(error => {
+            if (error.response && error.response.status === 500)
+              this.$f7.dialog.alert("Непредвиденная ошибка сервера", "Ошибка");
           })
       },
       navigateEvent() {
