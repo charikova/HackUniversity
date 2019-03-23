@@ -13,6 +13,12 @@
             :selected="selected_vote"
             :cancel_vote="cancel_vote"
           />
+          <div class="cancel_button" @click="sheetOpen = true">
+            <i class="material-icons">
+              attach_money
+            </i>
+            Усилить голос
+          </div>
         </div>
       </div>
       <div v-if="selected_vote === null">
@@ -49,6 +55,10 @@
              :opened="popupOpen"
              :eventId = "eventId"
              @popup:closed="popupOpen = false"></popup>
+      <PaySheet v-if="selected_vote !== null"
+                :opened="sheetOpen"
+                :track="selectedTrack"
+                @sheet:closed="sheetOpen = false"></PaySheet>
     </div>
   </f7-page>
 </template>
@@ -59,6 +69,7 @@
   import WebSocketHandler from "../js/websocket";
   import Popup from "../components/Popup";
   import PayButton from "../components/PayButton";
+  import PaySheet from "../components/PaySheet.js";
 
 
   export default {
@@ -74,10 +85,12 @@
       minutes: 0,
       time_left: 1,
       end: 0,
-      popupOpen:false
+      popupOpen:false,
+      sheetOpen:false
     }),
 
   components: {
+    PaySheet,
     PayButton,
     Popup,
     VoteChart
@@ -159,6 +172,9 @@
     },
     total_votes(){
       return this.$store.getters["getTotalVotes"]
+    },
+    selectedTrack(){
+      return this.votes.find(el => el.id == this.selected_vote);
     }
   }
 };
@@ -244,6 +260,12 @@
     display: inline-block;
     padding: 5px 10px !important;
     height: auto !important;
+    line-height: 35px;
+    border-radius: 5px;
+  }
+
+  .cancel_button i {
+    transform: translateY(3px);
   }
 
   .timer {
