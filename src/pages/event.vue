@@ -248,7 +248,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     text-align: left;
-
+    cursor: pointer;
   }
 
   .vote_artist {
@@ -299,10 +299,11 @@
   .mycontainer {
     padding: 0 10px;
     text-align: center;
+    margin-bottom: 30px;
   }
 
   .cancel_button {
-    margin: 15px 0;
+    margin-top: 15px;
     border: 1px solid #fff !important;
     color: #fff !important;
     font-size: 1.2rem;
@@ -317,9 +318,5 @@
     color: #fff;
     margin-top: 3px;
     line-height: 1.1;
-    position: fixed;
-    bottom: 10%;
-    left: 0;
-    width: 100%;
   }
 </style>
