@@ -7,7 +7,8 @@ const URL = `http://${process.env.VUE_APP_API_HOST}:${
   }/api/`;
 
 const initialState = () => ({
-  songs: []
+  songs: [],
+  socket_connected: false
 });
 
 const state = initialState();
@@ -39,6 +40,12 @@ const actions = {
 const mutations = {
   setSongs(state, songs) {
     state.songs = songs;
+  },
+  SOCKET_OPENED(state) {
+    state.socket_connected = true;
+  },
+  SOCKET_CLOSED(state) {
+    state.socket_connected = false;
   }
 };
 

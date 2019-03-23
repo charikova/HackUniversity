@@ -37,7 +37,6 @@ new Vue({
   data() {
     return {
       theme: "ios"
-      //socket: new WebSocketHandler(store)
     };
   },
   render: h => h(App)

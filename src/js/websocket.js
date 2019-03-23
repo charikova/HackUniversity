@@ -96,7 +96,7 @@ export default class WebSocketHandler {
 
   _onError(error) {
     console.log(error);
-    this.store.commit("SOCKET_ERRORED", { error });
+    //this.store.commit("SOCKET_ERRORED", { error });
   }
 
   _onMessage(event) {

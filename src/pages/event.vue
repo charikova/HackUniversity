@@ -43,6 +43,7 @@
 <script>
   import VoteChart from "../components/VoteChart";
   import { mapGetters } from "vuex";
+  import WebSocketHandler from "../js/websocket";
 
   export default {
     name: "event",
@@ -107,6 +108,11 @@
       if (stored) {
         this.selected_vote = stored;
       }
+
+      this.socket = new WebSocketHandler(this.$store);
+      const url = WebSocketHandler.eventSocketURL(1);
+      console.log(url);
+      this.socket.connect(url)
     },
     methods: {
       make_vote: function(id) {
