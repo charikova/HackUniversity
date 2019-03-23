@@ -1,16 +1,16 @@
 <template>
   <f7-page>
-    <f7-navbar>
-      <f7-nav-left>
-        <i class="f7-icons" style="padding-left: 10px" @click="back">chevron-left</i>
-      </f7-nav-left>
-      <f7-nav-title>
-        Генерация QR-кода для мероприятия
-      </f7-nav-title>
-      <f7-nav-right>
-      </f7-nav-right>
-    </f7-navbar>
-
+    <f7-page-content>
+      <f7-navbar>
+        <f7-nav-left>
+          <i class="f7-icons" style="padding-left: 10px" @click="back">chevron-left</i>
+        </f7-nav-left>
+        <f7-nav-title>
+          Генерация QR-кода для мероприятия
+        </f7-nav-title>
+        <f7-nav-right>
+        </f7-nav-right>
+      </f7-navbar>
     <div>
 
       <f7-list>
@@ -60,6 +60,7 @@
       </f7-block>
 
     </div>
+    </f7-page-content>
   </f7-page>
 </template>
 

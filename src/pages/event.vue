@@ -25,6 +25,7 @@
           </div>
         </div>
       </div>
+      <div class="subtitle_vote">До конца голосования:</div>
       <div class="timer">
         <div v-if="this.end == 0">
           <div class="subtitle_vote">До конца голосования:</div>
@@ -35,13 +36,20 @@
           <p>Голосование окончено</p>
         </div>
       </div>
+      <f7-list>
+        <f7-list-item
+          v-for="song in songs"
+          :title="song.title"
+          :key = "song.id">
+        </f7-list-item>
+      </f7-list>
     </div>
   </f7-page>
 </template>
 
 <script>
   import VoteChart from "../components/VoteChart";
-
+  import { mapGetters } from "vuex";
 
   export default {
     name: "event",
@@ -83,7 +91,7 @@
         eventId: this.eventId}
         )
         .then(()=> {
-            console.log('загружено')
+
         })
         .catch((error)=>{
           this.$f7.dialog.alert(`${error.response.status}`, "Error");
@@ -116,16 +124,26 @@
         }
         this.time_left = this.time_left - 1
       }, 1000);
+
+      const stored = localStorage.getItem('selected_vote');
+      if (stored) {
+        this.selected_vote = stored;
+      }
     },
     methods: {
       make_vote: function(id) {
         this.selected_vote = id;
+        localStorage.setItem('selected_vote', id);
       },
       cancel_vote: function() {
         this.selected_vote = null;
+        localStorage.removeItem('selected_vote');
       }
     },
-    computed: {},
+    computed: {
+      ...mapGetters({
+        songs:"getAllSongs"
+      })},
     components: { VoteChart }
   };
 </script>
