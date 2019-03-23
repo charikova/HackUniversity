@@ -45,7 +45,16 @@ const actions = {
     return axios
       .post(`${URL}event/${eventId}/currentTracks/`, data, axiosConfig)
       .then(({data}) => {
-        console.log(data)
+        commit("setChoice",array.tracks)
+      })
+      .catch((error) => {
+        throw error
+      })
+  },
+  vote({getters, commit},{eventId,trackId}){
+    return axios
+      .get(`${URL}event/${eventId}/vote/${trackId}`,null, axiosConfig)
+      .then(({data}) => {
       })
       .catch((error) => {
         throw error
@@ -54,7 +63,7 @@ const actions = {
   SOCKET_Current({getters, commit}, {data}) {
     commit("CurrentSongs", data)
   },
-  SOCKET_Choice({getters, commit},{data}){
+  SOCKET_poll({getters, commit},{data}){
     commit("ChoiceCount",{data})
   }
 }

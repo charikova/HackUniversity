@@ -107,6 +107,7 @@
             });
             toastCenter.open();
           })
+        this.$f7.popup.close();
       }
     }
   }
