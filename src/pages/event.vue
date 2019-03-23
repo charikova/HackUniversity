@@ -4,13 +4,13 @@
       <div v-if="selected_vote !== null">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
-          <div class="subtitle">Вы сделали голос</div>
+          <div class="subtitle">Вы проголосовали</div>
           <VoteChart
             :votes="votes"
             :total_votes="total_votes"
             :selected="selected_vote"
           />
-          <f7-button class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
+          <f7-button v-if="this.end == 0" class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
         </div>
       </div>
       <div v-if="selected_vote === null">
@@ -25,7 +25,6 @@
           </div>
         </div>
       </div>
-      <div class="subtitle_vote">До конца голосования:</div>
       <div class="timer">
         <div v-if="this.end == 0">
           <div class="subtitle_vote">До конца голосования:</div>
@@ -85,9 +84,9 @@
       total_votes: 113 + 87,
       selected_vote: null,
       current_time: 0,
-      finish_time: Math.floor(Date.now() / 1000 + 60),
-      seconds: "00",
-      minutes: "01",
+      finish_time: Math.floor(Date.now() / 1000 + 10),
+      seconds: 0,
+      minutes: 0,
       time_left: 1,
       end: 0
     }),
@@ -108,7 +107,23 @@
     mounted() {
       this.current_time = Math.floor(Date.now() / 1000);
       this.time_left = this.finish_time - this.current_time;
-      if (this.time_left <= 0) {
+      if (this.time_left <= 1) {
+        this.seconds = "00";
+        this.minutes = "00";
+        this.end = 1;
+      }
+      this.current_time = Math.floor(Date.now() / 1000);
+      let time_left = this.finish_time - this.current_time;
+      this.seconds = time_left % 60;
+      time_left = Math.floor(time_left / 60);
+      this.minutes = time_left % 60;
+      if (this.minutes < 10) {
+        this.minutes = "0" + this.minutes;
+      }
+      if (this.seconds < 10) {
+        this.seconds = "0" + this.seconds;
+      }
+      if (this.time_left <= 1) {
         this.seconds = "00";
         this.minutes = "00";
         this.end = 1;
@@ -125,7 +140,7 @@
         if (this.seconds < 10) {
           this.seconds = "0" + this.seconds;
         }
-        if (this.time_left <= 0) {
+        if (this.time_left <= 1) {
           this.seconds = "00";
           this.minutes = "00";
           this.end = 1;
@@ -167,6 +182,7 @@
 <style>
   p {
     font-size: 0.6em;
+    margin: .5em 0;
   }
 
   .vote_wrapper {
@@ -181,6 +197,7 @@
     position: relative;
     font-size: 1.2rem;
     font-weight: bold;
+    text-align: left;
 
   }
 
@@ -231,13 +248,17 @@
 
   .mycontainer {
     padding: 0 10px;
+    text-align: center;
   }
 
   .cancel_button {
-    margin-top: 40px;
-    border: none !important;
+    margin: 15px 0;
+    border: 1px solid #fff !important;
     color: #fff !important;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 5px 10px !important;
+    height: auto !important;
   }
 
   .timer {
@@ -245,6 +266,10 @@
     font-size: 5em;
     color: #fff;
     margin-top: 3px;
-
+    line-height: 1.1;
+    position: fixed;
+    bottom: 10%;
+    left: 0;
+    width: 100%;
   }
 </style>
