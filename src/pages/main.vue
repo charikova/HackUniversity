@@ -1,110 +1,50 @@
 <template>
-  <f7-page>
-    <f7-navbar title="Генерация QR-Кода для мероприятия"></f7-navbar>
-    <div>
+  <f7-page class="main-page">
+    <div class="main-block" style="background: #ff3b30;">
+      <div class="main-layout-block"
+      ></div>
 
-      <f7-list>
-        <f7-block-title>Имя Артиста</f7-block-title>
-        <f7-list-input
-          label=""
-          type="text"
-          :value="name"
-          @input="name = $event.target.value"
-          placeholder="Имя"
-          clear-button
-        ></f7-list-input>
-      </f7-list>
-      <f7-list>
-        <f7-block-title style="display: flex;justify-content: space-between;align-content: center;">
-          <span>Добавить песен</span>
-          <i
-            class="material-icons"
-            @click="addSong"
-          >add</i>
-        </f7-block-title>
-        <f7-list-input v-for="song in songs"
-                       :key="song.name+'-'+song.id"
-                       :value="song.title"
-                       @input="song.title = $event.target.value"
-                       placeholder="Название песни"
-        >
-
-        </f7-list-input>
-      </f7-list>
-      <f7-block>
-        <f7-button large fill color="red" @click="generateLink">Генерировать QR-Код</f7-button>
-      </f7-block>
-      <f7-block class="qr-code">
-        <qrcode v-if="link" :value="link" :options="{ width: widthDevice }"></qrcode>
-      </f7-block>
+    </div>
+    <div class="main-block">
+      <div class="main-layout-block"
+      >
+          <f7-button big fill color="red" @click="start">Начать мероприятие</f7-button>
+      </div>
+    </div>
+    <div class="main-block">
+      <div class="main-layout-block"
+      ></div>
     </div>
   </f7-page>
 </template>
 
 <script>
-
   export default {
     name: "main",
-    data() {
-      return {
-        link: "",
-        name: "",
-        songs: [{
-          id:0
-        }]
-      }
-    },
-    computed:{
-      widthDevice(){
-       return document.body.clientWidth-100
-      }
-    },
-    methods: {
-      addSong() {
-        if(!this.songs[this.songs.length-1].title) return
-        this.songs.push({
-          id:this.songs.length,
-        });
-      },
-      generateLink() {
-        if(!this.complete()) return
-        this.$store.dispatch('getEventId',{
-          name:this.name,
-          songs:this.songs})
-          .then(()=>{
-            this.link = `http://${process.env.VUE_APP_API_HOST}:${
-              process.env.VUE_APP_API_PORT}/event/${this.$store.getters["getEventId"]}`;
-          })
-          .catch(()=>{
-            console.log('ебать ты лох')
-          })
-      },
-      complete(){
-        if(!this.name){
-          this.$f7.dialog.alert("Имя обязательное поле","Ошибка");
-          return false
-        }
-        if(!this.songs[this.songs.length-1].title){
-          this.$f7.dialog.alert("Заполните песни","Ошибка");
-          return false
-        }
+    methods:{
+      start(){
+        this.$f7router.navigate('/admin/')
       }
     }
   }
+
 </script>
 
-<style scoped>
-  .main-button-qr {
-    width: 100%;
-    height: 100%;
+<style>
+  .main-page .page-content {
     display: flex;
-    justify-content: center;
-    align-content: center;
+    flex-direction: column;
   }
 
-  .qr-code {
-    display: flex;
-    justify-content: center;
-    align-content: center;
+  .main-block {
+    width: 100%;
+    flex-grow: 1;
+    border: 1px black solid;
   }
+
+  .main-layout-block {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
 </style>
