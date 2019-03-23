@@ -10,7 +10,7 @@
             :total_votes="total_votes"
             :selected="selected_vote"
           />
-          <f7-button class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
+          <f7-button v-if="this.end == 0" class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
         </div>
       </div>
       <div v-if="selected_vote === null">
@@ -84,9 +84,9 @@
       total_votes: 113 + 87,
       selected_vote: null,
       current_time: 0,
-      finish_time: Math.floor(Date.now() / 1000 + 60),
-      seconds: "00",
-      minutes: "01",
+      finish_time: Math.floor(Date.now() / 1000 + 10),
+      seconds: 0,
+      minutes: 0,
       time_left: 1,
       end: 0
     }),
@@ -107,7 +107,23 @@
     mounted() {
       this.current_time = Math.floor(Date.now() / 1000);
       this.time_left = this.finish_time - this.current_time;
-      if (this.time_left <= 0) {
+      if (this.time_left <= 1) {
+        this.seconds = "00";
+        this.minutes = "00";
+        this.end = 1;
+      }
+      this.current_time = Math.floor(Date.now() / 1000);
+      let time_left = this.finish_time - this.current_time;
+      this.seconds = time_left % 60;
+      time_left = Math.floor(time_left / 60);
+      this.minutes = time_left % 60;
+      if (this.minutes < 10) {
+        this.minutes = "0" + this.minutes;
+      }
+      if (this.seconds < 10) {
+        this.seconds = "0" + this.seconds;
+      }
+      if (this.time_left <= 1) {
         this.seconds = "00";
         this.minutes = "00";
         this.end = 1;
@@ -124,7 +140,7 @@
         if (this.seconds < 10) {
           this.seconds = "0" + this.seconds;
         }
-        if (this.time_left <= 0) {
+        if (this.time_left <= 1) {
           this.seconds = "00";
           this.minutes = "00";
           this.end = 1;
