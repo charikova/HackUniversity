@@ -41,7 +41,7 @@ const actions = {
         throw error
       })
   },
-  setCurrentSongs({getters, commit},{currentSongs}){
+  setCurrentSongs({getters, commit},{eventId,currentSongs}){
     return axios
       .get(`${URL}event/${eventId}/currentTracks/`, currentSongs, axiosConfig)
       .then(({data}) => {

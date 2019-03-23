@@ -46,7 +46,8 @@
           >
           </f7-list-item>
         </f7-list>
-        <f7-button class="cancel_button" @click="sendCurrentSongs">Отправить на голосвание</f7-button>
+        <f7-stepper :value="timer" :min="10" :max="300" :step="10"></f7-stepper>
+        <f7-button class="cancel_button" @click="sendCurrentSongs">Отправить на голосование</f7-button>
       </div>
     </div>
   </f7-page>
@@ -93,7 +94,8 @@
       minutes: 0,
       time_left: 1,
       end: 0,
-      currentSongs:[]
+      currentSongs:[],
+      timer: 60
     }),
     created(){
       if(!!localStorage.getItem("admin")) {
@@ -179,7 +181,16 @@
           this.$f7.dialog.alert("Выберите больше одной песни", "Ошибка");
           return
         }
-        this.$store.dispatch("setCurrentSongs",this.currentSongs)
+        const data = {
+          type: "current",
+          songs: this.currentSongs,
+          timer: this.timer
+        }
+
+        this.$store.dispatch("setCurrentSongs",{
+          eventId: this.eventId,
+          data: data
+        })
           .then(() => {
             var toastCenter = this.$f7.toast.create({
               text: "Отправлено",
