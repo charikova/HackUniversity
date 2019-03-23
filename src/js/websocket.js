@@ -10,7 +10,7 @@ export default class WebSocketHandler {
     this.websocket = null;
 
     this.url = null;
-    this.retriesAvailable = 10;
+    this.retriesAvailable = 3;
   }
 
   connect(url) {

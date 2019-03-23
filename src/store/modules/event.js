@@ -8,7 +8,10 @@ const URL = `http://${process.env.VUE_APP_API_HOST}:${
 
 const initialState = () => ({
   songs: [],
-  socket_connected: false
+  socket_connected: false,
+  currentSongs: [],
+  timer: '',
+  choice: {}
 });
 
 const state = initialState();
@@ -22,6 +25,9 @@ const axiosConfig = {
 
 const getters = {
   getAllSongs: ({songs}) => songs,
+  getTimer: ({timer}) => timer,
+  getChoice: ({choice}) => choice,
+  getCurrentSongs: ({currentSongs}) => currentSongs
 };
 
 const actions = {
@@ -34,8 +40,18 @@ const actions = {
       .catch((error) => {
         throw error
       })
+  },
+  setCurrentSongs({getters, commit},{currentSongs}){
+
+  },
+  SOCKET_Current({getters, commit}, {data}) {
+    commit("CurrentSongs", data)
+  },
+  SOCKET_Choice({getters, commit},{data}){
+    commit("ChoiceCount",{data})
   }
 }
+
 
 const mutations = {
   setSongs(state, songs) {
@@ -46,8 +62,16 @@ const mutations = {
   },
   SOCKET_CLOSED(state) {
     state.socket_connected = false;
+  },
+  CurrentSongs(state, data) {
+    state.currentSongs = data.songs;
+    state.timer = data.timer;
+  },
+  ChoiceCount(state, data) {
+    state.choice = data;
+
   }
-};
+}
 
 export default {
   state,
