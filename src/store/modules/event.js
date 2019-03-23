@@ -11,7 +11,8 @@ const initialState = () => ({
   socket_connected: false,
   currentSongs: [],
   timer: 0,
-  choice: {}
+  choice: {},
+  total: 1
 });
 
 const state = initialState();
@@ -27,7 +28,8 @@ const getters = {
   getAllSongs: ({songs}) => songs,
   getTimer: ({timer}) => timer,
   getChoice: ({choice}) => choice,
-  getCurrentSongs: ({currentSongs}) => currentSongs
+  getCurrentSongs: ({currentSongs}) => currentSongs,
+  getTotal: ({total}) => total
 };
 
 const actions = {
@@ -41,30 +43,34 @@ const actions = {
         throw error
       })
   },
-  setCurrentSongs({getters, commit},{eventId,data}){
+  setCurrentSongs({getters, commit}, {eventId, data}) {
     return axios
       .post(`${URL}event/${eventId}/currentTracks/`, data, axiosConfig)
       .then(({data}) => {
-        commit("setChoice",array.tracks)
+        commit("setChoice", array.tracks)
       })
       .catch((error) => {
         throw error
       })
   },
-  vote({getters, commit},{eventId,trackId}){
-    return axios
-      .get(`${URL}event/${eventId}/vote/${trackId}`,null, axiosConfig)
-      .then(({data}) => {
-      })
-      .catch((error) => {
-        throw error
-      })
+  vote({getters, commit}, {eventId, trackId, inc}) {
+      return axios
+        .get(`${URL}event/${eventId}/vote/${trackId}/${inc}`, null, axiosConfig)
+        .then(({data}) => {
+        })
+        .catch((error) => {
+          throw error
+        })
+
   },
   SOCKET_Current({getters, commit}, {data}) {
     commit("CurrentSongs", data)
   },
-  SOCKET_poll({getters, commit},{data}){
-    commit("ChoiceCount",{data})
+  SOCKET_poll({getters, commit}, {data}) {
+    commit("ChoiceCount", {data})
+  },
+  editTotal({commit},flg){
+    commit("editedTotal",flg)
   }
 }
 
@@ -83,9 +89,20 @@ const mutations = {
     state.currentSongs = data.tracks;
     state.timer = data.timer;
   },
-  ChoiceCount(state, data) {
-    state.choice = data;
-
+  ChoiceCount(state, {data}) {
+    console.log(data);
+    state.currentSongs.forEach((item) => {
+      data.choice.forEach((ch) => {
+        if (item.id === ch.id)
+          item.count = ch.count
+      })
+      state.total = data.total;
+    })
+  },
+  editedTotal(state,flg){
+    if(flg)
+      state.total -= 1;
+    else state.total += 1;
   }
 }
 

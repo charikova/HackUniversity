@@ -43,7 +43,7 @@
         </div>
       </div>
       <div v-if="isAdmin" style="display: flex;justify-content: center;align-content: center;">
-        <f7-button  class="cancel_button" @click="popupOpen = true">Песни для голосования</f7-button>
+        <f7-button  class="cancel_button" style="margin-bottom: 10%;" @click="popupOpen = true">Песни для голосования</f7-button>
       </div>
       <popup v-if="isAdmin"
              :opened="popupOpen"
@@ -59,7 +59,7 @@
   import WebSocketHandler from "../js/websocket";
   import Popup from "../components/Popup";
   import PayButton from "../components/PayButton";
-
+  import Vue from "vue";
 
   export default {
     name: "event",
@@ -137,14 +137,22 @@
       this.selected_vote = vote.id;
       localStorage.setItem("selected_vote", vote.id);
       this.$store.dispatch("vote",{
-        eventId: 1,
-        trackId: vote.id
+        eventId: this.eventId,
+        trackId: vote.id,
+        inc: "inc"
       })
+      this.$store.dispatch("editTotal",false)
     },
     cancel_vote: function(vote) {
       this.selected_vote = null;
       localStorage.removeItem("selected_vote");
       vote.count--;
+      this.$store.dispatch("vote",{
+        eventId: this.eventId,
+        trackId: vote.id,
+        inc: "dec"
+      })
+      this.$store.dispatch("editTotal",true)
     }
   },
   computed: {
@@ -158,7 +166,7 @@
       return this.$store.getters["getCurrentSongs"]
     },
     total_votes(){
-      return this.$store.getters["getTotalVotes"]
+      return this.$store.getters["getTotal"]
     }
   }
 };
@@ -217,7 +225,7 @@
   .gradient {
     background: linear-gradient(148.61deg, rgba(219, 84, 197, 0.65) 7.81%, rgba(234, 56, 56, 0.65) 56.36%, rgba(232, 112, 61, 0.65) 96.56%) !important;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   .mynavbar {

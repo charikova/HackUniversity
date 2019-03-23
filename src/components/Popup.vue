@@ -114,7 +114,7 @@
 </script>
 
 <style>
-  .custom-stopper .item-content .item-inner {
+  .custom-stopper .item-content  {
     display: flex;
     text-align: center;
     justify-content: center;
