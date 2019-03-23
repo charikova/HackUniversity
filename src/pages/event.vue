@@ -36,7 +36,7 @@
         </div>
       </div>
       <div v-if="isAdmin">
-
+        <f7-button  class="cancel_button" @click="popupOpen = true">Песни для голосования</f7-button>
       </div>
       <popup v-if="isAdmin"
              :opened="popupOpen"

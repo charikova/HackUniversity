@@ -6,6 +6,16 @@
     @popup:closed="$emit('popup:closed');"
   >
     <f7-page-content>
+      <f7-navbar>
+        <f7-nav-left>
+        </f7-nav-left>
+        <f7-nav-title>
+          Выбор песен для голосования
+        </f7-nav-title>
+        <f7-nav-right>
+          <f7-link  style="padding-left: 10px" @click="close">Зыкрыть</f7-link>
+        </f7-nav-right>
+      </f7-navbar>
       <f7-list>
         <f7-list-item
           v-for="song in songs"
@@ -44,6 +54,9 @@
       })
     },
     methods: {
+      close(){
+        this.$f7.popup.close();
+      },
       addSongCurrent(song) {
         this.currentSongs.push(song)
       },
