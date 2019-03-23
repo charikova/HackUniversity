@@ -42,7 +42,6 @@ export default {
   position: relative;
   font-size: 1.2rem;
   align-items: center;
-
 }
 
 .vote_name {

@@ -4,7 +4,7 @@
       <div v-if="selected_vote !== null">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
-          <div class="subtitle">Вы сделали голос</div>
+          <div class="subtitle">Вы проголосовали</div>
           <VoteChart
             :votes="votes"
             :total_votes="total_votes"
@@ -25,7 +25,6 @@
           </div>
         </div>
       </div>
-      <div class="subtitle_vote">До конца голосования:</div>
       <div class="timer">
         <div v-if="this.end == 0">
           <div class="subtitle_vote">До конца голосования:</div>
@@ -167,6 +166,7 @@
 <style>
   p {
     font-size: 0.6em;
+    margin: .5em 0;
   }
 
   .vote_wrapper {
@@ -181,6 +181,7 @@
     position: relative;
     font-size: 1.2rem;
     font-weight: bold;
+    text-align: left;
 
   }
 
@@ -231,13 +232,17 @@
 
   .mycontainer {
     padding: 0 10px;
+    text-align: center;
   }
 
   .cancel_button {
-    margin-top: 40px;
-    border: none !important;
+    margin: 15px 0;
+    border: 1px solid #fff !important;
     color: #fff !important;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 5px 10px !important;
+    height: auto !important;
   }
 
   .timer {
@@ -245,6 +250,10 @@
     font-size: 5em;
     color: #fff;
     margin-top: 3px;
-
+    line-height: 1.1;
+    position: fixed;
+    bottom: 10%;
+    left: 0;
+    width: 100%;
   }
 </style>
