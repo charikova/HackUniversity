@@ -35,33 +35,21 @@
           <p>Голосование окончено</p>
         </div>
       </div>
-      <div v-if="isAdmin" style="display: flex;justify-content: center;align-content: center;flex-direction: column">
-        <div class="subtitle">Выберите следующую песню</div>
-        <f7-list>
-          <f7-list-item
-            v-for="song in songs"
-            :title="song.title"
-            :key = "song.id"
-            @click="addSongCurrent(song)"
-            checkbox
-          >
-          </f7-list-item>
-          <f7-list-item><f7-stepper
-            :value="timer" :min="10" :max="300" :step="10"
-            style="border: 1px white solid;"
-          ></f7-stepper></f7-list-item>
-        </f7-list>
-        <f7-button  class="cancel_button" @click="sendCurrentSongs">Отправить на голосование</f7-button>
+      <div v-if="isAdmin">
+
       </div>
+      <popup v-if="isAdmin"
+             :opened="popupOpen"
+             @popup:closed="popupOpen = false"></popup>
     </div>
   </f7-page>
 </template>
 
 <script>
   import VoteChart from "../components/VoteChart";
-  import { mapGetters } from "vuex";
+  import {mapGetters} from "vuex";
   import WebSocketHandler from "../js/websocket";
-
+  import Popup from "../components/Popup";
 
 
   export default {
@@ -98,11 +86,16 @@
       minutes: 0,
       time_left: 1,
       end: 0,
-      currentSongs:[],
-      timer: 60
+      popupOpen:false
     }),
-    created(){
-      if(!!localStorage.getItem("admin")) {
+
+    components: {
+      Popup,
+      VoteChart,
+
+    },
+    created() {
+      if (!!localStorage.getItem("admin")) {
         this.$store.dispatch('getSongs', {
             eventId: this.eventId
           }
@@ -126,7 +119,7 @@
       this.socket.connect(url)
     },
     methods: {
-      timerStart(){
+      timerStart() {
         this.current_time = Math.floor(Date.now() / 1000);
         this.time_left = this.finish_time - this.current_time;
         if (this.time_left <= 1) {
@@ -170,62 +163,25 @@
           this.time_left = this.time_left - 1
         }, 1000);
       },
-      make_vote: function(id) {
+      make_vote: function (id) {
         this.selected_vote = id;
         localStorage.setItem('selected_vote', id);
       },
-      cancel_vote: function() {
+      cancel_vote: function () {
         this.selected_vote = null;
         localStorage.removeItem('selected_vote');
       },
-      addSongCurrent(song){
-        this.currentSongs.push(song)
-      },
-      sendCurrentSongs(){
-        if(this.currentSongs.length < 2) {
-          this.$f7.dialog.alert("Выберите больше одной песни", "Ошибка");
-          return
-        }
-        const data = {
-          type: "Current",
-          tracks: this.currentSongs,
-          timer: this.timer
-        }
 
-        this.$store.dispatch("setCurrentSongs",{
-          eventId: this.eventId,
-          data: data
-        })
-          .then(() => {
-            var toastCenter = this.$f7.toast.create({
-              text: "Отправлено",
-              position: "center",
-              closeTimeout: 1000
-            });
-            toastCenter.open();
-          })
-          .catch((error) => {
-            var toastCenter = this.$f7.toast.create({
-              text: "Произошла ошибка",
-              position: "center",
-              closeTimeout: 1000
-            });
-            toastCenter.open();
-          })
-      }
     },
     computed: {
       ...mapGetters({
-        songs:"getAllSongs",
         realTime: "getTimer"
       }),
-      isAdmin(){
+      isAdmin() {
         return !!localStorage.getItem("admin")
       },
 
-      },
-
-    components: { VoteChart }
+    },
   };
 </script>
 
@@ -263,7 +219,6 @@
     margin-bottom: 15px;
     margin-top: 20px;
   }
-
 
   .subtitle_vote {
     text-align: center;
