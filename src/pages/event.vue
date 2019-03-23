@@ -25,6 +25,10 @@
           </div>
         </div>
       </div>
+      <div class="subtitle_vote">До конца голосования:</div>
+      <div class="timer">
+        {{minutes}}:{{seconds}}
+      </div>
     </div>
   </f7-page>
 </template>
@@ -61,6 +65,10 @@
       ],
       total_votes: 113 + 87,
       selected_vote: null,
+      current_time: 0,
+      finish_time: Math.floor(Date.now() / 1000 + 60),
+      seconds: 0,
+      minutes: 0
     }),
     created(){
       this.$store.dispatch('getSongs', {
@@ -74,7 +82,20 @@
         })
     },
     mounted() {
-
+      setInterval(() => {
+        this.current_time = Math.floor(Date.now() / 1000);
+        let time_left = this.finish_time - this.current_time;
+        this.seconds = time_left % 60;
+        time_left = Math.floor(time_left / 60);
+        this.minutes = time_left % 60;
+        if (this.minutes < 10) {
+          this.minutes = "0" + this.minutes;
+        }
+        if (this.seconds < 10) {
+          this.seconds = "0" + this.seconds;
+        }
+        ;
+      }, 1000);
     },
     methods: {
       make_vote: function(id) {
@@ -118,6 +139,15 @@
     margin-top: 20px;
   }
 
+
+  .subtitle_vote {
+    text-align: center;
+    font-size: 1.3em;
+    color: #fff;
+    margin-bottom: 1px;
+    margin-top: 10px;
+  }
+
   .gradient {
     background: linear-gradient(148.61deg, rgba(219, 84, 197, 0.65) 7.81%, rgba(234, 56, 56, 0.65) 56.36%, rgba(232, 112, 61, 0.65) 96.56%) !important;
     height: 100%;
@@ -143,5 +173,13 @@
     border: none !important;
     color: #fff !important;
     font-size: 1.3rem;
+  }
+
+  .timer {
+    text-align: center;
+    font-size: 5em;
+    color: #fff;
+    margin-top: 3px;
+
   }
 </style>
