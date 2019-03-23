@@ -11,7 +11,7 @@
           <div class="header">Узнайте лучше свою аудиторию!</div>
           Запустите голосование и дайте возможность посетителям концертов самим определить следующую песню
         </div>
-        <f7-button big fill color="red" @click="start">Начать мероприятие</f7-button>
+        <f7-button big fill color="red" @click="start">Создать мероприятие</f7-button>
       </div>
     </div>
   </f7-page>

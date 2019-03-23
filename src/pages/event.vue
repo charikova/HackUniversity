@@ -60,8 +60,19 @@
         }
       ],
       total_votes: 113 + 87,
-      selected_vote: null
+      selected_vote: null,
     }),
+    created(){
+      this.$store.dispatch('getSongs', {
+        eventId: this.eventId}
+        )
+        .then(()=> {
+            console.log('загружено')
+        })
+        .catch((error)=>{
+          this.$f7.dialog.alert(`${error.response.status}`, "Error");
+        })
+    },
     mounted() {
 
     },
