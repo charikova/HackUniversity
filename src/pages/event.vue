@@ -32,8 +32,8 @@
       <f7-list>
         <f7-list-item
           v-for="song in songs"
-          :title="song.title">
-          
+          :title="song.title"
+          :key = "song.id">
         </f7-list-item>
       </f7-list>
     </div>
