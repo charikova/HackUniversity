@@ -2,7 +2,7 @@ export default class WebSocketHandler {
   static eventSocketURL(eventId) {
     return `${process.env.VUE_APP_WS_TYPE}://${process.env.VUE_APP_API_HOST}:${
       process.env.VUE_APP_WS_PORT
-    }/ws/event/${eventId}/`;
+    }/spring/ws/event/${eventId}`;
   }
 
   constructor(store) {

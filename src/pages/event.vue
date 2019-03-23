@@ -35,15 +35,19 @@
           <p>Голосование окончено</p>
         </div>
       </div>
-      <f7-block v-if="isAdmin">
+      <div v-if="isAdmin">
+        <div class="subtitle">Выберите следующую песню</div>
         <f7-list>
           <f7-list-item
             v-for="song in songs"
             :title="song.title"
-            :key = "song.id">
+            :key = "song.id"
+            @click="addSongCurrent(song)"
+          >
           </f7-list-item>
         </f7-list>
-      </f7-block>
+        <f7-button class="cancel_button" @click="sendCurrentSongs">Отправить на голосвание</f7-button>
+      </div>
     </div>
   </f7-page>
 </template>
@@ -88,7 +92,8 @@
       seconds: 0,
       minutes: 0,
       time_left: 1,
-      end: 0
+      end: 0,
+      currentSongs:[]
     }),
     created(){
       if(!!localStorage.getItem("admin")) {
@@ -155,7 +160,6 @@
 
       this.socket = new WebSocketHandler(this.$store);
       const url = WebSocketHandler.eventSocketURL(1);
-      console.log(url);
       this.socket.connect(url)
     },
     methods: {
@@ -166,15 +170,45 @@
       cancel_vote: function() {
         this.selected_vote = null;
         localStorage.removeItem('selected_vote');
+      },
+      addSongCurrent(song){
+        this.currentSongs.push(song)
+      },
+      sendCurrentSongs(){
+        if(this.currentSongs.length < 2) {
+          this.$f7.dialog.alert("Выберите больше одной песни", "Ошибка");
+          return
+        }
+        this.$store.dispatch("setCurrentSongs",this.currentSongs)
+          .then(() => {
+            var toastCenter = this.$f7.toast.create({
+              text: "Отправлено",
+              position: "center",
+              closeTimeout: 1000
+            });
+            toastCenter.open();
+          })
+          .catch((error) => {
+            var toastCenter = this.$f7.toast.create({
+              text: "Произошла ошибка",
+              position: "center",
+              closeTimeout: 1000
+            });
+            toastCenter.open();
+          })
       }
     },
     computed: {
       ...mapGetters({
-        songs:"getAllSongs"
+        songs:"getAllSongs",
+        realTime: "getTimer"
       }),
       isAdmin(){
         return !!localStorage.getItem("admin")
-      }},
+      },
+
+      },
+
     components: { VoteChart }
   };
 </script>

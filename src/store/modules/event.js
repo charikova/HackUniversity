@@ -42,7 +42,14 @@ const actions = {
       })
   },
   setCurrentSongs({getters, commit},{currentSongs}){
-
+    return axios
+      .get(`${URL}event/${eventId}/currentTracks/`, currentSongs, axiosConfig)
+      .then(({data}) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        throw error
+      })
   },
   SOCKET_Current({getters, commit}, {data}) {
     commit("CurrentSongs", data)
