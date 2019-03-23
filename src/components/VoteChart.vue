@@ -3,23 +3,28 @@
     <div v-for="vote in votes" :key="vote.id" class="vote_wrapper">
       <div
         class="vote_bar"
-        :style="{ width: Math.round((vote.count / total_votes) * 100) + '%' }"
+        :style="[ bar_animate ?  { width: Math.round((vote.count / total_votes) * 100) + '%' } : {}]"
       ></div>
       <div class="vote_left">
         <div class="vote_name">{{ vote.name }}</div>
-        <div class="vote_artist">{{ vote.artist}}</div>
+        <div class="vote_artist">{{ vote.artist }}</div>
       </div>
       <div class="vote_result">
         {{ vote.count }}
       </div>
     </div>
-    <f7-button class="cancel_button">Отменить голос</f7-button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["votes", "selected", "total_votes"]
+  props: ["votes", "selected", "total_votes"],
+  data: () => ({
+    bar_animate: false
+  }),
+  mounted() {
+    setTimeout(() => { this.bar_animate = true }, 1);
+  }
 };
 </script>
 
@@ -64,11 +69,8 @@ export default {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.2);
   z-index: 5;
+  transition: width ease-out 0.3s;
+  width: 0;
 }
-.cancel_button {
-  margin-top: 40px;
-  border: none;
-  color: #fff;
-  font-size: 1.3rem;
-}
+
 </style>
