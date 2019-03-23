@@ -9,6 +9,7 @@
           :total_votes="total_votes"
           :selected="selected_vote"
         />
+        <f7-button class="cancel_button" @click="cancel_vote">Отменить голос</f7-button>
       </div>
     </div>
     <div v-if="selected_vote === null">
@@ -71,10 +72,14 @@
         })
     },
     mounted() {
+
     },
     methods: {
       make_vote: function(id) {
         this.selected_vote = id;
+      },
+      cancel_vote: function() {
+        this.selected_vote = null;
       }
     },
     computed: {},
@@ -127,5 +132,12 @@
 
   .mycontainer {
     padding: 0 10px;
+  }
+
+  .cancel_button {
+    margin-top: 40px;
+    border: none !important;
+    color: #fff !important;
+    font-size: 1.3rem;
   }
 </style>
