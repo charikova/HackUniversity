@@ -5,7 +5,7 @@
     tablet-fullscreen
     @popup:closed="$emit('popup:closed');"
   >
-    <f7-page-content>
+    <f7-page>
       <f7-navbar>
         <f7-nav-left>
         </f7-nav-left>
@@ -13,7 +13,7 @@
           Выбор песен для голосования
         </f7-nav-title>
         <f7-nav-right>
-          <f7-link  style="padding-left: 10px" @click="close">Зыкрыть</f7-link>
+          <f7-link  style="font-size: 14px;" @click="close">Зыкрыть</f7-link>
         </f7-nav-right>
       </f7-navbar>
       <f7-list>
@@ -28,12 +28,12 @@
         <f7-list-item>
           <f7-stepper
             :value="timer" :min="10" :max="300" :step="10"
-            style="border: 1px white solid;"
+            style="border: 1px white solid;display:flex;align-content: center;justify-content: center"
           ></f7-stepper>
         </f7-list-item>
+        <f7-list-button @click="sendCurrentSongs">Отправить на голосование</f7-list-button>
       </f7-list>
-      <f7-button class="cancel_button" @click="sendCurrentSongs">Отправить на голосование</f7-button>
-    </f7-page-content>
+    </f7-page>
   </f7-popup>
 </template>
 

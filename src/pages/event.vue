@@ -35,7 +35,7 @@
           <p>Голосование окончено</p>
         </div>
       </div>
-      <div v-if="isAdmin">
+      <div v-if="isAdmin" style="display: flex;justify-content: center;align-content: center;">
         <f7-button  class="cancel_button" @click="popupOpen = true">Песни для голосования</f7-button>
       </div>
       <popup v-if="isAdmin"
