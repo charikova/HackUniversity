@@ -59,6 +59,8 @@
              @popup:closed="popupOpen = false"></popup>
       <PaySheet v-if="selected_vote !== null"
                 :opened="sheetOpen"
+                :eventId="eventId"
+                :trackId="selected_vote"
                 :track="selectedTrack"
                 @sheet:closed="sheetOpen = false"></PaySheet>
     </div>
@@ -160,7 +162,7 @@
           inc: "inc",
           value: "1"
         })
-        this.$store.dispatch("editTotal", true, 1)
+        this.$store.dispatch("editTotal",{flg:false, value:1})
       },
       cancel_vote: function (vote) {
         this.selected_vote = null;
@@ -172,7 +174,7 @@
           inc: "dec",
           value: "0"
         })
-        this.$store.dispatch("editTotal", false, 0)
+        this.$store.dispatch("editTotal", {flg:true, value:0})
       }
     },
     computed: {

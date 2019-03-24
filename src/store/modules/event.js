@@ -74,8 +74,9 @@ const actions = {
   SOCKET_lottery({commit},{data}){
     commit("startedLottery")
   },
-  editTotal({commit},flg){
-    commit("editedTotal",flg)
+  editTotal({commit},{flg,value}){
+
+    commit("editedTotal",{flg,value})
   },
   startLottery({commit},eventId){
     return axios
@@ -112,10 +113,11 @@ const mutations = {
       state.total = data.total;
     })
   },
-  editedTotal(state,flg,value){
+  editedTotal(state,{flg,value}){
+    console.log(value)
     if(flg)
-      state.total -= value;
-    else state.total += value;
+      state.total -= 1;
+    else state.total += 1;
   },
   startedLottery(state){
       state.lottery = true;

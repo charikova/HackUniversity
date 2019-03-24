@@ -26,16 +26,16 @@
 <script>
   export default {
     name: "PaySheet",
-    props: ['opened', 'track'],
+    props: ['opened', 'track','eventId','trackId'],
     methods:{
       payVote(value){
         this.$store.dispatch("vote", {
           eventId: this.eventId,
-          trackId: vote.id,
+          trackId: this.trackId,
           inc: "inc",
           value: value
         })
-        this.$store.dispatch("editTotal", true, value)
+        this.$store.dispatch("editTotal", {flg:true, value:value})
       }
     }
   };
