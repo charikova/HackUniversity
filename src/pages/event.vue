@@ -3,7 +3,7 @@
     <div class="gradient">
       <!--<PayButton />-->
 
-      <div v-if="selected_vote !== null" :class="{'disable':this.end === 1}">
+      <div v-if="selected_vote !== null" :class="{'disable': ended}">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
           <div class="subtitle">Вы проголосовали</div>
@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div v-if="selected_vote === null">
+      <div v-if="selected_vote === null" :class="{'disable': ended}">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
           <div class="subtitle">Выберите следующую песню</div>
@@ -44,16 +44,17 @@
           {{ minutes }}:{{ seconds }}
         </div>
         <div class="time_is_over" v-if="this.end == 1">
-          Время вышло!<br />
+          Время вышло!<br/>
           <p>Голосование окончено</p>
         </div>
       </div>
       <div v-if="isAdmin" style="display: flex;justify-content: center;align-content: center;">
-        <f7-button  class="cancel_button" style="margin-bottom: 10%;" @click="popupOpen = true">Песни для голосования</f7-button>
+        <f7-button class="cancel_button" style="margin-bottom: 10%;" @click="popupOpen = true">Настройки голосования
+        </f7-button>
       </div>
       <popup v-if="isAdmin"
              :opened="popupOpen"
-             :eventId = "eventId"
+             :eventId="eventId"
              @popup:closed="popupOpen = false"></popup>
       <PaySheet v-if="selected_vote !== null"
                 :opened="sheetOpen"
@@ -83,109 +84,118 @@
       seconds: 0,
       minutes: 0,
       time_left: 1,
-      end: 0,
-      popupOpen:false,
-      sheetOpen:false
+      end: 1,
+      popupOpen: false,
+      sheetOpen: false
     }),
 
-  components: {
-    PaySheet,
-    PayButton,
-    Popup,
-    VoteChart
-  },
-  created() {
-    if (localStorage.getItem("admin")) {
-      this.$store
-        .dispatch("getSongs", {
-          eventId: this.eventId
+    components: {
+      PaySheet,
+      PayButton,
+      Popup,
+      VoteChart
+    },
+    created() {
+      if (localStorage.getItem("admin")) {
+        this.$store
+          .dispatch("getSongs", {
+            eventId: this.eventId
+          })
+          .then(() => {
+          })
+          .catch(error => {
+            this.$f7.dialog.alert(`${error.response.status}`, "Error");
+          });
+      }
+    },
+    mounted() {
+      const stored = localStorage.getItem("selected_vote");
+      if (stored) {
+        this.selected_vote = stored;
+      }
+
+      this.socket = new WebSocketHandler(this.$store);
+      const url = WebSocketHandler.eventSocketURL(1);
+      this.socket.connect(url);
+
+      this.timerStart();
+    },
+    beforeDestroy() {
+      this.socket.disconnect();
+    },
+    methods: {
+      timerStart() {
+        const updateTimer = () => {
+          this.current_time = Math.floor(Date.now() / 1000);
+          let time_left = Math.floor(this.realTime / 1000) - this.current_time;
+
+          if (time_left <= 1) {
+            this.seconds = "00";
+            this.minutes = "00";
+            this.end = 1;
+          } else {
+            this.seconds = time_left % 60;
+            time_left = Math.floor(time_left / 60);
+            this.minutes = time_left % 60;
+            if (this.minutes < 10) {
+              this.minutes = "0" + this.minutes;
+            }
+            if (this.seconds < 10) {
+              this.seconds = "0" + this.seconds;
+            }
+            this.end = 0;
+          }
+        };
+        updateTimer();
+        setInterval(updateTimer, 1000);
+      },
+      make_vote: function (vote) {
+        vote.count++;
+        this.selected_vote = vote.id;
+        localStorage.setItem("selected_vote", vote.id);
+        this.$store.dispatch("vote", {
+          eventId: this.eventId,
+          trackId: vote.id,
+          inc: "inc"
         })
-        .then(() => {})
-        .catch(error => {
-          this.$f7.dialog.alert(`${error.response.status}`, "Error");
-        });
+        this.$store.dispatch("editTotal", true)
+      },
+      cancel_vote: function (vote) {
+        this.selected_vote = null;
+        localStorage.removeItem("selected_vote");
+        vote.count--;
+        this.$store.dispatch("vote", {
+          eventId: this.eventId,
+          trackId: vote.id,
+          inc: "dec"
+        })
+        this.$store.dispatch("editTotal", false)
+      }
+    },
+    computed: {
+      ...mapGetters({
+        realTime: "getTimer"
+      }),
+      isAdmin() {
+        return !!localStorage.getItem("admin");
+      },
+      votes() {
+        this.selected_vote = null;
+        localStorage.removeItem("selected_vote");
+        return this.$store.getters["getCurrentSongs"]
+      },
+      total_votes() {
+        return this.$store.getters["getTotal"]
+        return this.$store.getters["getTotalVotes"]
+      },
+      selectedTrack() {
+        return this.votes.find(el => el.id == this.selected_vote);
+      },
+      ended(){
+        return !!this.end
+      }
     }
-  },
-  mounted() {
-    const stored = localStorage.getItem("selected_vote");
-    if (stored) {
-      this.selected_vote = stored;
-    }
-
-    this.socket = new WebSocketHandler(this.$store);
-    const url = WebSocketHandler.eventSocketURL(1);
-    this.socket.connect(url);
-
-    this.timerStart();
-  },
-  methods: {
-    timerStart() {
-      const updateTimer = () => {
-        this.current_time = Math.floor(Date.now() / 1000);
-        let time_left = Math.floor(this.realTime / 1000) - this.current_time;
-
-        if (time_left <= 1) {
-          this.seconds = "00";
-          this.minutes = "00";
-          this.end = 1;
-        } else {
-          this.seconds = time_left % 60;
-          time_left = Math.floor(time_left / 60);
-          this.minutes = time_left % 60;
-          if (this.minutes < 10) {
-            this.minutes = "0" + this.minutes;
-          }
-          if (this.seconds < 10) {
-            this.seconds = "0" + this.seconds;
-          }
-          this.end = 0;
-        }
-      };
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    },
-    make_vote: function(vote) {
-      vote.count++;
-      this.selected_vote = vote.id;
-      localStorage.setItem("selected_vote", vote.id);
-      this.$store.dispatch("vote",{
-        eventId: this.eventId,
-        trackId: vote.id,
-        inc: "inc"
-      })
-      this.$store.dispatch("editTotal",false)
-    },
-    cancel_vote: function(vote) {
-      this.selected_vote = null;
-      localStorage.removeItem("selected_vote");
-      vote.count--;
-      this.$store.dispatch("vote",{
-        eventId: this.eventId,
-        trackId: vote.id,
-        inc: "dec"
-      })
-      this.$store.dispatch("editTotal",true)
-    }
-  },
-  computed: {
-    ...mapGetters({
-      realTime: "getTimer"
-    }),
-    isAdmin() {
-      return !!localStorage.getItem("admin");
-    },
-    votes(){
-      return this.$store.getters["getCurrentSongs"]
-    },
-    total_votes(){
-      return this.$store.getters["getTotal"]
-      return this.$store.getters["getTotalVotes"]
-    },
-    selectedTrack(){
-      return this.votes.find(el => el.id == this.selected_vote);
-    }
-  }
-};
+  };
 </script>
 
 <style>
@@ -283,7 +293,8 @@
     margin-top: 3px;
     line-height: 1.1;
   }
-  .disable{
+
+  .disable {
     pointer-events: none;
   }
 </style>

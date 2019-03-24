@@ -12,7 +12,8 @@ const initialState = () => ({
   currentSongs: [],
   timer: 0,
   choice: {},
-  total: 0
+  total: 0,
+  lottery:false
 });
 
 const state = initialState();
@@ -48,9 +49,10 @@ const actions = {
       .post(`${URL}event/${eventId}/currentTracks/`, data, axiosConfig)
       .then(({data}) => {
         commit("setChoice", array.tracks)
+        return
       })
       .catch((error) => {
-        throw error
+
       })
   },
   vote({getters, commit}, {eventId, trackId, inc}) {
@@ -69,8 +71,20 @@ const actions = {
   SOCKET_poll({getters, commit}, {data}) {
     commit("ChoiceCount", {data})
   },
+  SOCKET_lottery({commit},{data}){
+    commit("startedLottery")
+  },
   editTotal({commit},flg){
     commit("editedTotal",flg)
+  },
+  startLottery({commit},eventId){
+    return axios
+      .get(`${URL}event/${eventId}/startLottery`, null, axiosConfig)
+      .then(({data}) => {
+      })
+      .catch((error) => {
+        throw error
+      })
   }
 }
 
@@ -90,7 +104,6 @@ const mutations = {
     state.timer = data.timer;
   },
   ChoiceCount(state, {data}) {
-    console.log(data);
     state.currentSongs.forEach((item) => {
       data.choice.forEach((ch) => {
         if (item.id === ch.id)
@@ -103,6 +116,9 @@ const mutations = {
     if(flg)
       state.total -= 1;
     else state.total += 1;
+  },
+  startedLottery(state){
+      state.lottery = true;
   }
 }
 
