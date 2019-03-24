@@ -24,7 +24,8 @@
       <div v-if="selected_vote === null" :class="{'disable': ended}">
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
-          <div class="subtitle">Выберите следующую песню</div>
+          <div class="subtitle" v-if="this.realTime !== 0">Выберите следующую песню</div>
+          <div class="subtitle"  v-if="!votes && selected_vote">Голосование скоро начнется</div>
           <div
             v-for="vote in votes"
             :key="vote.id"
@@ -156,9 +157,10 @@
         this.$store.dispatch("vote", {
           eventId: this.eventId,
           trackId: vote.id,
-          inc: "inc"
+          inc: "inc",
+          value: "1"
         })
-        this.$store.dispatch("editTotal", true)
+        this.$store.dispatch("editTotal", true, 1)
       },
       cancel_vote: function (vote) {
         this.selected_vote = null;
@@ -167,9 +169,10 @@
         this.$store.dispatch("vote", {
           eventId: this.eventId,
           trackId: vote.id,
-          inc: "dec"
+          inc: "dec",
+          value: "0"
         })
-        this.$store.dispatch("editTotal", false)
+        this.$store.dispatch("editTotal", false, 0)
       }
     },
     computed: {

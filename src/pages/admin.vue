@@ -11,7 +11,6 @@
         <f7-nav-right>
         </f7-nav-right>
       </f7-navbar>
-    <div>
 
       <f7-list>
         <f7-block-title>Имя Исполнителя</f7-block-title>
@@ -58,11 +57,21 @@
       <f7-block>
         <f7-button v-if="eventAdd" big fill color="red" @click="navigateEvent">Перейти в мероприятие</f7-button>
       </f7-block>
-      <f7-block class="qr-code">
-        <qrcode v-if="link" :value="link" :options="{ width: widthDevice }"></qrcode>
+      <f7-block style="display: flex;justify-content: center">
+        <f7-button v-if="eventAdd && isDesktop" big fill color="red" @click="closeQr" style="width: 30%;">Открыть QR-код</f7-button>
       </f7-block>
-
-    </div>
+      <f7-block class="qr-code" v-if="!isDesktop">
+        <qrcode v-if="link && open" :value="link" :options="{ width: widthDevice }"></qrcode>
+      </f7-block>
+      <div v-if="isDesktop && open && link" @click="closeQr"
+           style="width: 100%;height: 100%;position: absolute;top:0;display: flex;
+           justify-content: center;
+           align-items: center;
+          z-index: 1000;"
+           :class="{'layoutQR': open}"
+      >
+        <qrcode class="qr-code-desktop" :value="link" :options="{ width: widthDevice }"></qrcode>
+      </div>
     </f7-page-content>
   </f7-page>
 </template>
@@ -78,15 +87,25 @@
         eventAdd: false,
         songs: [{
           id: 1
-        }]
+        }],
+        open: false
       }
     },
     computed: {
+      isDesktop(){
+        return this.$device.desktop
+      },
       widthDevice() {
-        return document.body.clientWidth - 100
+        if (this.$device.desktop)
+          return document.body.clientWidth - 500
+        else return document.body.clientWidth - 100
       }
     },
     methods: {
+      closeQr(){
+        console.log('lol');
+        this.open = !this.open
+      },
       addSong() {
         //if (!this.songs[this.songs.length - 1].title) return
         this.songs.push({
@@ -113,6 +132,7 @@
             this.link = `http://${process.env.VUE_APP_API_HOST}:${
               process.env.VUE_APP_API_PORT}/event/${this.$store.getters["getEventId"]}`;
             this.eventAdd = true;
+            this.open = !this.open;
           })
           .catch(error => {
             if (error.response && error.response.status === 500)
@@ -138,5 +158,13 @@
     display: flex;
     justify-content: center;
     align-content: center;
+  }
+  .qr-code-desktop{
+
+    z-index: 10000;
+
+  }
+  .layoutQR{
+    background: rgba(0,0,0,0.5);
   }
 </style>

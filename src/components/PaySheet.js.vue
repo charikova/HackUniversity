@@ -11,12 +11,12 @@
       <f7-block v-if="track">
         <p class="trackname">{{ `Вы голосуете за ${track.name} – ${track.title}` }}</p>
         <f7-row>
-          <f7-col><button class="col button button-outline">50 руб.<br />+ 1 голосов</button></f7-col>
-          <f7-col><button class="col button button-outline">100 руб.<br />+ 5 голосов</button></f7-col>
+          <f7-col><button class="col button button-outline" @click="payVote(50)">50 руб.<br />+ 1 голосов</button></f7-col>
+          <f7-col><button class="col button button-outline" @click="payVote(100)">100 руб.<br />+ 5 голосов</button></f7-col>
         </f7-row>
         <f7-row>
-          <f7-col><button class="col button button-outline">500 руб.<br />+ 25 голосов</button></f7-col>
-          <f7-col><button class="col button button-outline">1000 руб.<br />+ 50  голосов</button></f7-col>
+          <f7-col><button class="col button button-outline" @click="payVote(500)">500 руб.<br />+ 25 голосов</button></f7-col>
+          <f7-col><button class="col button button-outline" @click="payVote(1000)">1000 руб.<br />+ 50  голосов</button></f7-col>
         </f7-row>
       </f7-block>
     </f7-page-content>
@@ -27,7 +27,19 @@
   export default {
     name: "PaySheet",
     props: ['opened', 'track'],
+    methods:{
+      payVote(value){
+        this.$store.dispatch("vote", {
+          eventId: this.eventId,
+          trackId: vote.id,
+          inc: "inc",
+          value: value
+        })
+        this.$store.dispatch("editTotal", true, value)
+      }
+    }
   };
+
 </script>
 
 <style scoped>

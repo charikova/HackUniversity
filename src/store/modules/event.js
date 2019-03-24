@@ -55,9 +55,9 @@ const actions = {
 
       })
   },
-  vote({getters, commit}, {eventId, trackId, inc}) {
+  vote({getters, commit}, {eventId, trackId, inc, value}) {
       return axios
-        .get(`${URL}event/${eventId}/vote/${trackId}/${inc}`, null, axiosConfig)
+        .get(`${URL}event/${eventId}/vote/${trackId}/${inc}/${value}`, null, axiosConfig)
         .then(({data}) => {
         })
         .catch((error) => {
@@ -112,10 +112,10 @@ const mutations = {
       state.total = data.total;
     })
   },
-  editedTotal(state,flg){
+  editedTotal(state,flg,value){
     if(flg)
-      state.total -= 1;
-    else state.total += 1;
+      state.total -= value;
+    else state.total += value;
   },
   startedLottery(state){
       state.lottery = true;
