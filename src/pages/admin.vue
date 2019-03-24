@@ -14,7 +14,7 @@
     <div>
 
       <f7-list>
-        <f7-block-title>Имя Артиста</f7-block-title>
+        <f7-block-title>Имя Исполнителя</f7-block-title>
         <f7-list-input
           label=""
           type="text"
@@ -25,8 +25,11 @@
         ></f7-list-input>
       </f7-list>
       <f7-list>
-        <f7-block-title style="display: flex;justify-content: space-between;align-content: center;">
-          <span>Добавить песен</span>
+        <f7-block-title>
+          <span>Добавить песни</span>
+        </f7-block-title>
+        <f7-block-header>Здесь вы должны добавить песни, которые будут играть на вашем мероприятии</f7-block-header>
+        <f7-block-title style="display: flex;justify-content: flex-end;margin-top:0">
           <div style="display: flex;">
             <div @click="delSong">
               <i
@@ -98,8 +101,8 @@
           this.$f7.dialog.alert("Имя обязательное поле", "Ошибка");
           return
         }
-        if (!this.songs[this.songs.length - 1].title) {
-          this.$f7.dialog.alert("Заполните песни", "Ошибка");
+        if (this.songs.length < 2 || !this.songs[this.songs.length - 1].title) {
+          this.$f7.dialog.alert("Выберите больше одной песни", "Ошибка");
           return
         }
         this.$store.dispatch('getEventId', {

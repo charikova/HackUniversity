@@ -174,7 +174,8 @@
     },
     computed: {
       ...mapGetters({
-        realTime: "getTimer"
+        realTime: "getTimer",
+        winLottery:"getLottery"
       }),
       isAdmin() {
         return !!localStorage.getItem("admin");
@@ -193,6 +194,11 @@
       },
       ended(){
         return !!this.end
+      }
+    },
+    watch:{
+      winLottery:function () {
+        this.$f7.dialog.alert("Вы выиграли в лотерее", "Поздравляю");
       }
     }
   };

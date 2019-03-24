@@ -28,7 +28,7 @@ const axiosConfig = {
 const getters = {
   getAllSongs: ({songs}) => songs,
   getTimer: ({timer}) => timer,
-  getChoice: ({choice}) => choice,
+  getLottery: ({lottery}) => lottery,
   getCurrentSongs: ({currentSongs}) => currentSongs,
   getTotal: ({total}) => total
 };
