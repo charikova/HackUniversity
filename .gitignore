@@ -51,5 +51,3 @@ dump.rdb
 # editors config files
 .idea/
 .vscode/
-
-www/
