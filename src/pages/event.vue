@@ -25,7 +25,7 @@
         <div class="mynavbar">Голосование</div>
         <div class="mycontainer">
           <div class="subtitle" v-if="this.realTime !== 0">Выберите следующую песню</div>
-          <div class="subtitle"  v-if="!votes && selected_vote">Голосование скоро начнется</div>
+          <div class="subtitle"  v-if="!votes.length">Голосование скоро начнется</div>
           <div
             v-for="vote in votes"
             :key="vote.id"

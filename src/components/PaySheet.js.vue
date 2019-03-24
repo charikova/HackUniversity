@@ -35,6 +35,7 @@
           inc: "inc",
           value: value
         })
+        this.$f7.sheet.close();
         /*this.$store.dispatch("editTotal", {flg:true, value:value})*/
       }
     }
