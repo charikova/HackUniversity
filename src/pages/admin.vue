@@ -129,8 +129,7 @@
           songs: this.songs
         })
           .then(() => {
-            this.link = `http://${process.env.VUE_APP_API_HOST}:${
-              process.env.VUE_APP_API_PORT}/event/${this.$store.getters["getEventId"]}`;
+            this.link = `http://partymode.ru/#!/event/${this.$store.getters["getEventId"]}/`;
             this.eventAdd = true;
             this.open = !this.open;
           })
