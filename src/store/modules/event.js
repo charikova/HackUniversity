@@ -116,8 +116,8 @@ const mutations = {
   editedTotal(state,{flg,value}){
     console.log(value)
     if(flg)
-      state.total -= 1;
-    else state.total += 1;
+      state.total -= value;
+    else state.total += value;
   },
   startedLottery(state){
       state.lottery = true;

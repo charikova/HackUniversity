@@ -162,7 +162,7 @@
           inc: "inc",
           value: "1"
         })
-        this.$store.dispatch("editTotal",{flg:false, value:1})
+        /*this.$store.dispatch("editTotal",{flg:false, value:1})*/
       },
       cancel_vote: function (vote) {
         this.selected_vote = null;
@@ -174,7 +174,7 @@
           inc: "dec",
           value: "0"
         })
-        this.$store.dispatch("editTotal", {flg:true, value:0})
+       /* this.$store.dispatch("editTotal", {flg:true, value:0})*/
       }
     },
     computed: {

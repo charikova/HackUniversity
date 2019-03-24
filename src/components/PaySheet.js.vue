@@ -35,7 +35,7 @@
           inc: "inc",
           value: value
         })
-        this.$store.dispatch("editTotal", {flg:true, value:value})
+        /*this.$store.dispatch("editTotal", {flg:true, value:value})*/
       }
     }
   };
