@@ -129,7 +129,7 @@
           songs: this.songs
         })
           .then(() => {
-            this.link = `http://partymode.ru/#!/event/${this.$store.getters["getEventId"]}`;
+            this.link = `http://partymode.ru/#!/event/${this.$store.getters["getEventId"]}/`;
             this.eventAdd = true;
             this.open = !this.open;
           })
